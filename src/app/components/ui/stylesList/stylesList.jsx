@@ -1,8 +1,8 @@
 import React from "react";
-import StyleCard from "../styleCard/styleCard";
 import PropTypes from "prop-types";
+import PageCard from "../../common/PageCard";
 
-const StylesCards = ({ styles, tatoos }) => {
+const StylesList = ({ styles, tatoos }) => {
     const getImgUrl = (arr, style) => {
         return arr.find((tatto) => tatto.style === style).src;
     };
@@ -16,7 +16,8 @@ const StylesCards = ({ styles, tatoos }) => {
                     key={style.name}
                     className="col-4 float-left"
                 >
-                    <StyleCard
+                    <PageCard
+                        linkTo={`/styles/${style.name}`}
                         img={getImgUrl(tatoos, style.name)}
                         name={style.name}
                         count={getCount(style.name)}
@@ -27,9 +28,9 @@ const StylesCards = ({ styles, tatoos }) => {
     );
 };
 
-StylesCards.propTypes = {
+StylesList.propTypes = {
     styles: PropTypes.object,
     tatoos: PropTypes.array
 };
 
-export default StylesCards;
+export default StylesList;

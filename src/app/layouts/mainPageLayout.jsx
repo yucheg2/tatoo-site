@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../components/navigation/navBar";
+import NavBar from "../components/ui/navigation/navBar";
 import PropTypes from "prop-types";
 
 const MainPageLayout = ({ children }) => {
@@ -23,7 +23,7 @@ const MainPageLayout = ({ children }) => {
 };
 
 MainPageLayout.propTypes = {
-    children: PropTypes.element
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
 };
 
 export default MainPageLayout;

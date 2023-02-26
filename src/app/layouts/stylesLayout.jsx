@@ -8,17 +8,23 @@ import TatoosPage from "../pages/tatooPage/tatoosPage";
 const Styles = () => {
     const [tattoosData, setTatoosData] = useState();
     const { style } = useParams();
-    console.log(tattoosData);
     useEffect(() => {
-        tattoosServase.fetchTatoos().then((data) => {
-            setTatoosData(data);
-        });
+        if (localStorage.getItem("tatoosData")) {
+            setTatoosData(JSON.parse(localStorage.getItem("tatoosData")));
+        } else {
+            tattoosServase.fetchTatoos().then((data) => {
+                setTatoosData(data);
+            });
+        }
     }, []);
     return (
         <MainPageLayout>
-            {style
-                ? <TatoosPage style={style} {...tattoosData}/>
-                : <StylesPage tattoosData={tattoosData}/>
+            {
+                tattoosData
+                    ? style
+                        ? <TatoosPage style={style} {...tattoosData}/>
+                        : <StylesPage {...tattoosData}/>
+                    : "...loading"
             }
         </MainPageLayout>
     );

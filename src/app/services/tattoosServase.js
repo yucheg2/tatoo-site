@@ -5,6 +5,7 @@ class TattoosService {
         return new Promise((resolve) => {
             window.setTimeout(() => {
                 resolve({ tatoos, styles });
+                localStorage.setItem("tatoosData", JSON.stringify({ tatoos, styles }));
             }, 1500);
         });
     }

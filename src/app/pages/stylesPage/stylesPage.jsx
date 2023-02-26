@@ -1,14 +1,12 @@
 import React from "react";
-import StylesCards from "../../components/ui/stylesCards/stylesCards";
 import PropTypes from "prop-types";
+import StylesList from "../../components/ui/stylesList/stylesList";
 
-const StylesPage = ({ tattoosData }) => {
+const StylesPage = (tattoosData) => {
     return (
-        tattoosData
-            ? <div className="StylesPage">
-                <StylesCards {...tattoosData}/>
-            </div>
-            : "loading..."
+        <div className="StylesPage">
+            <StylesList {...tattoosData}/>
+        </div>
     );
 };
 
