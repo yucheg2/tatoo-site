@@ -21,7 +21,7 @@ const NavBar = () => {
                 <Link
                     className="UnderlineNav-item"
                     to="/styles"
-                    aria-current={page === "/styles"}
+                    aria-current={page.includes("/styles")}
                 >
                     Татуировки
                 </Link>

@@ -355,12 +355,6 @@ const tatoos = [
         place: [places.back, places.belly, places.hand, places.leg, places.neck]
     },
     {
-        src: "sketches/minimalism/2-03.jpg",
-        size: sizes.small,
-        style: styles.minimalism.name,
-        place: [places.back, places.belly, places.hand, places.leg, places.neck]
-    },
-    {
         src: "sketches/minimalism/2-04.jpg",
         size: sizes.small,
         style: styles.minimalism.name,

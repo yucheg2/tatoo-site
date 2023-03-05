@@ -6,7 +6,7 @@ class TattoosService {
             window.setTimeout(() => {
                 resolve({ tatoos, styles });
                 localStorage.setItem("tatoosData", JSON.stringify({ tatoos, styles }));
-            }, 1500);
+            }, 5000);
         });
     }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import PageCard from "../../common/PageCard";
+import StyleCard from "../styleCard/styleCard";
 
 const StylesList = ({ styles, tatoos }) => {
     const getImgUrl = (arr, style) => {
@@ -16,7 +16,7 @@ const StylesList = ({ styles, tatoos }) => {
                     key={style.name}
                     className="col-4 float-left"
                 >
-                    <PageCard
+                    <StyleCard
                         linkTo={`/styles/${style.name}`}
                         img={getImgUrl(tatoos, style.name)}
                         name={style.name}

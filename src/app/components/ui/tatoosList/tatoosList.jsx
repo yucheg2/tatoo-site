@@ -1,30 +1,38 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
-import PageCard from "../../common/PageCard";
+import ImageCard from "../imageCard/imageCard";
+import Modal from "../modal/modal";
 
 const TatoosList = ({ array }) => {
-    const handleClick = (e) => {
-        e.preventDefault();
-        console.log("joj");
+    const modal = useRef();
+    const [showModal, setShowModal] = useState(false);
+    const handleChoose = (e) => {
+        setShowModal(true);
+        modal.current.children[1].children[0].src = e;
+    };
+    const handleClose = () => {
+        setShowModal(false);
     };
     return (
-        array.map((t, i) => {
-            return <div
-                key={i}
-                className="col-4 float-left"
-            >
-                <PageCard
-                    onClick={handleClick}
-                    img={`/${t.src}`}
-                />
-            </div>;
-        })
+        <>
+            {array.map((t, i) => {
+                return <div
+                    key={i}
+                    className="col-4 float-left"
+                >
+                    <ImageCard
+                        onClick={handleChoose}
+                        img={`/${t.src}`}
+                    />
+                </div>;
+            })}
+            <Modal show={showModal} onClose={handleClose} reference={modal}/>
+        </>
     );
 };
 
 TatoosList.propTypes = {
-    styles: PropTypes.object,
-    tatoos: PropTypes.array
+    array: PropTypes.array
 };
 
 export default TatoosList;

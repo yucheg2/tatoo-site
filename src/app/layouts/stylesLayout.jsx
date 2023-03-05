@@ -5,7 +5,7 @@ import tattoosServase from "../services/tattoosServase";
 import { useParams } from "react-router-dom";
 import TatoosPage from "../pages/tatooPage/tatoosPage";
 
-const Styles = () => {
+const StylesLayout = () => {
     const [tattoosData, setTatoosData] = useState();
     const { style } = useParams();
     useEffect(() => {
@@ -24,10 +24,10 @@ const Styles = () => {
                     ? style
                         ? <TatoosPage style={style} {...tattoosData}/>
                         : <StylesPage {...tattoosData}/>
-                    : "...loading"
+                    : <h2><span>Падажи</span><span className="AnimatedEllipsis"></span></h2>
             }
         </MainPageLayout>
     );
 };
 
-export default Styles;
+export default StylesLayout;
