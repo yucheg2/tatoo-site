@@ -1,14 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ImageCard from "../imageCard/imageCard";
-import Modal from "../modal/modal";
+import TatoosModal from "../tatoosModal/tatoosModal";
 
 const TatoosList = ({ array }) => {
-    const modal = useRef();
     const [showModal, setShowModal] = useState(false);
-    const handleChoose = (e) => {
+    const [selected, setSelected] = useState();
+    const handleChoose = (t) => {
         setShowModal(true);
-        modal.current.children[1].children[0].src = e;
+        setSelected(t);
     };
     const handleClose = () => {
         setShowModal(false);
@@ -22,11 +22,11 @@ const TatoosList = ({ array }) => {
                 >
                     <ImageCard
                         onClick={handleChoose}
-                        img={`/${t.src}`}
+                        tatoo={t}
                     />
                 </div>;
             })}
-            <Modal show={showModal} onClose={handleClose} reference={modal}/>
+            {selected && <TatoosModal show={showModal} onClose={handleClose} tatoo={selected}/>}
         </>
     );
 };

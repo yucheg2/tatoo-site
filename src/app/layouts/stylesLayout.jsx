@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import MainPageLayout from "./mainPageLayout";
 import StylesPage from "../pages/stylesPage/stylesPage";
-import tattoosServase from "../services/tattoosServase";
 import { useParams } from "react-router-dom";
 import TatoosPage from "../pages/tatooPage/tatoosPage";
+import { useTatoos } from "../hooks/useTatoo";
+import { useStyles } from "../hooks/useStyles";
 
 const StylesLayout = () => {
-    const [tattoosData, setTatoosData] = useState();
+    const { tatoos } = useTatoos();
+    const { styles } = useStyles();
     const { style } = useParams();
-    useEffect(() => {
-        if (localStorage.getItem("tatoosData")) {
-            setTatoosData(JSON.parse(localStorage.getItem("tatoosData")));
-        } else {
-            tattoosServase.fetchTatoos().then((data) => {
-                setTatoosData(data);
-            });
-        }
-    }, []);
     return (
         <MainPageLayout>
             {
-                tattoosData
+                tatoos && styles
                     ? style
-                        ? <TatoosPage style={style} {...tattoosData}/>
-                        : <StylesPage {...tattoosData}/>
+                        ? <TatoosPage style={style} tatoos={tatoos} styles={styles}/>
+                        : <StylesPage tatoos={tatoos} styles={styles}/>
                     : <h2><span>Падажи</span><span className="AnimatedEllipsis"></span></h2>
             }
         </MainPageLayout>

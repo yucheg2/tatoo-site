@@ -1,0 +1,4 @@
+{
+    "initialEndPoint" : "https://tatoos-site-default-rtdb.europe-west1.firebasedatabase.app/info/",
+    "isFireBase": true
+}

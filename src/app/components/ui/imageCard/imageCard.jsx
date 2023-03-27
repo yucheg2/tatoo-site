@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
-const ImageCard = ({ img, count, name, onClick }) => {
+const ImageCard = ({ count, name, onClick, tatoo }) => {
     const imageBlock = useRef();
     const handleHover = () => {
         imageBlock.current.children[0].style.width = "100%";
@@ -15,9 +15,9 @@ const ImageCard = ({ img, count, name, onClick }) => {
     return (
         <div
             className="container rounded-3 mx-3 my-3"
-            onClick={() => { onClick(img); }}
+            onClick={() => { onClick(tatoo); }}
             style={{
-                backgroundImage: `url( ${img} )`,
+                backgroundImage: `url( ${`/${tatoo.src}`} )`,
                 backgroundSize: "cover",
                 height: "400px",
                 cursor: "pointer"
@@ -43,7 +43,7 @@ const ImageCard = ({ img, count, name, onClick }) => {
                 </div>}
 
                 <p
-                    className="p color-fg-default"
+                    className="p color-fg-default text-bold"
                     style={{
                         opacity: "0",
                         transition: "0.30s"
@@ -59,8 +59,8 @@ const ImageCard = ({ img, count, name, onClick }) => {
 ImageCard.propTypes = {
     onClick: PropTypes.func,
     name: PropTypes.string,
-    img: PropTypes.string,
-    count: PropTypes.number
+    count: PropTypes.number,
+    tatoo: PropTypes.object
 };
 
 export default ImageCard;

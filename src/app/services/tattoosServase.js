@@ -1,14 +1,12 @@
-import tatoos, { styles } from "../API/fake.api/tatoos";
+import httpService from "./httpService";
 
-class TattoosService {
-    fetchTatoos() {
-        return new Promise((resolve) => {
-            window.setTimeout(() => {
-                resolve({ tatoos, styles });
-                localStorage.setItem("tatoosData", JSON.stringify({ tatoos, styles }));
-            }, 5000);
-        });
+const tattoosService = {
+    tatoosEndPoint: "tatoos/",
+
+    get: async function() {
+        const data = await httpService.get(this.tatoosEndPoint);
+        return data;
     }
-}
+};
 
-export default new TattoosService();
+export default tattoosService;
