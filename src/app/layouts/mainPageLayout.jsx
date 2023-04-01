@@ -1,11 +1,15 @@
 import React from "react";
 import NavBar from "../components/ui/navigation/navBar";
 import PropTypes from "prop-types";
+import { useTatoos } from "../hooks/useTatoo";
+import { useStyles } from "../hooks/useStyles";
 
 const MainPageLayout = ({ children }) => {
     const handleClick = () => {
 
     };
+    const tatoos = useTatoos();
+    const styles = useStyles();
     return (
         <div className="mainPageLayout" >
             <header data-color-mode="dark">
@@ -20,7 +24,10 @@ const MainPageLayout = ({ children }) => {
                     </button>
                 </div>
             </header>
-            {children}
+            { !(tatoos.loading || styles.loading)
+                ? children
+                : <h2><span>Падажи</span><span className="AnimatedEllipsis"></span></h2>
+            }
         </div>
     );
 };

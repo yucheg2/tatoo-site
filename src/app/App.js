@@ -4,6 +4,9 @@ import routes from "./routes";
 import { ToastContainer } from "react-toastify";
 import TatoosProvider from "./hooks/useTatoo";
 import StylesProvider from "./hooks/useStyles";
+import MainPageLayout from "./layouts/mainPageLayout";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
     const getRoutes = () => {
         return routes.map((rout) => {
@@ -14,9 +17,11 @@ function App() {
         <BrowserRouter>
             <StylesProvider>
                 <TatoosProvider>
-                    <Switch>
-                        {getRoutes()}
-                    </Switch>
+                    <MainPageLayout>
+                        <Switch>
+                            {getRoutes()}
+                        </Switch>
+                    </MainPageLayout>
                 </TatoosProvider>
             </StylesProvider>
             <ToastContainer />

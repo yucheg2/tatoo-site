@@ -6,7 +6,7 @@ const routes = [
     { name: "Главная", path: "/", component: MainPage },
     { name: "Татуировки", path: "/styles", component: StylesLayout },
     { display: false, path: "/styles/:style", component: StylesLayout },
-    { name: "Заказы", path: "/storage", component: StoragePage }
+    { name: "Заказы", counter: true, path: "/storage", component: StoragePage }
 ];
 
 export default routes;

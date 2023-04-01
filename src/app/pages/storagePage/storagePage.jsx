@@ -1,25 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import StorageList from "../../components/ui/storageList/storageList";
 import { useTatoos } from "../../hooks/useTatoo";
-import MainPageLayout from "../../layouts/mainPageLayout";
 
 const StoragePage = () => {
+    const [items, setItems] = useState([]);
     const { getTatoosBySrc } = useTatoos();
     const storage = JSON.parse(localStorage.getItem("store"));
-    const addTatoos = storage && storage.map((t) => getTatoosBySrc(t._id));
-    console.log(addTatoos);
+
+    useEffect(() => {
+        const addTatoos = storage && storage.map((t) => {
+            const item = { ...getTatoosBySrc(t._id) };
+            item.id = t._id + t.places;
+            item.place = t.places;
+            return item;
+        });
+        setItems(addTatoos);
+    }, []);
+    const handleDelete = (id) => {
+        const filtred = items.filter((t) => t.id !== id);
+        setItems(filtred);
+        localStorage.setItem("store", JSON.stringify(filtred));
+    };
     return (
-        <MainPageLayout>
-            <div className='container-lg'>
-                {storage
-                    ? <div>
-                        {storage.map((tatoo) => {
-                            return <h3 key={tatoo._id}>{tatoo._id}</h3>;
-                        })}
-                    </div>
-                    : <h3>У вас нет заказов</h3>
-                }
-            </div>
-        </MainPageLayout>
+        <div className='container-lg'>
+            {(items.length > 0)
+                ? <StorageList arr={items} handleDelete={handleDelete}/>
+                : <h1 className="text-center color-fg-muted">У вас нет заказов</h1>
+            }
+        </div>
     );
 };
 

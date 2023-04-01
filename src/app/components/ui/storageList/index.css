@@ -1,0 +1,12 @@
+.img-storage {
+    object-fit: cover;
+    max-width: 200px;
+    height: 300px;
+    vertical-align:middle;
+}
+
+.container-srorage {
+    max-width: 500px;
+    border: solid #c0713d;
+    border-width: 4px;
+}
