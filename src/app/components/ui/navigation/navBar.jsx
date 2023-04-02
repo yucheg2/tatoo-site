@@ -3,10 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import LogRegLayout from "../../../layouts/logRegLayout";
 import Modal from "../../common/modal/modal";
 import routes from "../../../routes";
-import useNavCount from "../../../hooks/useNavCount";
+import { useNavCount } from "../../../hooks/useNavCount";
 const NavBar = () => {
     const [show, setShow] = useState(false);
-    const { currentCount } = useNavCount;
+    const { currentCount } = useNavCount();
     const handleShow = () => {
         setShow(false);
     };
@@ -51,7 +51,7 @@ const NavBar = () => {
             </nav>
             <Modal onClose={handleShow} show={show}>
                 <div className="register-page d-flex flex-column">
-                    <LogRegLayout/>
+                    <LogRegLayout onRegSubmit={() => { setShow(false); }}/>
                 </div>
             </Modal>
         </>

@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import TextField from "../../common/Form/textField/textField";
 import validator from "../../../utils/validator";
 import PropTypes from "prop-types";
+import useForm from "../../../hooks/useForm";
 
 const RegisterForm = ({ onSubmit }) => {
     const initialData = { name: "", password: "", phone: "", email: "" };
-    const [data, setData] = useState(initialData);
+    const { data, handleChange, setInitial } = useForm(initialData);
     const [isBlock, setIsBlock] = useState(true);
     const [error, setError] = useState({});
-    const handleChange = (target) => {
-        setData((p) => ({
-            ...p,
-            ...target
-        }));
-    };
     const handleSubmit = (e) => {
         e.preventDefault();
         localStorage.setItem("auth", JSON.stringify(data));
-        setData(initialData);
+        setInitial(initialData);
         onSubmit && onSubmit();
     };
     const validatotConfig = {

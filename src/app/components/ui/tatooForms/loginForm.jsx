@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+import useForm from "../../../hooks/useForm";
 import TextField from "../../common/Form/textField/textField";
 
 const LoginForm = () => {
-    const [data, setData] = useState({ password: "", email: "" });
-    const handleChange = (target) => {
-        setData((p) => ({
-            ...p,
-            ...target
-        }));
-    };
+    const { data, handleChange } = useForm({ password: "", email: "" });
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(data);

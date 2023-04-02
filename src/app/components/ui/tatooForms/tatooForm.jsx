@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Places from "../../common/Form/RadioGroupField/RadioGroupField";
+import Places from "../../common/Form/radioGroupField/radioGroupField";
 
 const TatooForm = ({ tatoo, onChange, value }) => {
     const handleChange = (target) => {

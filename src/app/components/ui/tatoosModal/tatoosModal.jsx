@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import TatooForm1 from "../tatooForms/tatooForm";
 import Modal from "../../common/modal/modal";
 import LogRegLayout from "../../../layouts/logRegLayout";
-import useNavCount from "../../../hooks/useNavCount";
+import { useNavCount } from "../../../hooks/useNavCount";
 
 const TatoosModal = ({ tatoo, onClose, show }) => {
     const [data, setData] = useState("");
@@ -24,11 +24,11 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
         setData(data);
     };
     const handleSubmit = () => {
-        const obj = { _id: tatoo.src, places: data };
+        const obj = { _id: tatoo.src + data, place: data, src: tatoo.src };
         const store = localStorage.getItem("store");
         if (store) {
             const newArr = JSON.parse(store);
-            if (!newArr.some((item) => (item.places === obj.places && obj.src === item.src))) {
+            if (!newArr.some((item) => (item.places === obj.place && obj.src === item.src))) {
                 localStorage.setItem("store", JSON.stringify([...newArr, obj]));
             }
         } else {

@@ -26,7 +26,7 @@ const TextField = ({ value, name, onChange, label, type, placeHolder, error }) =
                     onChange={handleChange}
                     className="form-control input-lg"
                     type={ShowPassword ? "text" : type}
-                    value={value}
+                    value={value || ""}
                     id={name}
                     placeholder={placeHolder}
                     aria-label="Full-width input"
