@@ -16,7 +16,7 @@ const MainPageLayout = ({ children }) => {
             <div className="mainPageLayout" >
                 <header data-color-mode="dark">
                     <NavBar />
-                    <div className="d-flex p-4 flex-justify-center color-bg-subtle mb-2">
+                    <div className="d-flex p-4 flex-justify-center color-bg-subtle mb-2" >
                         <div className="mr-4">
                             <h2>+7 (495) 371-35-26</h2>
                             <p>ежедневно с 8:00 до 22:00</p>
@@ -28,10 +28,11 @@ const MainPageLayout = ({ children }) => {
                 </header>
                 { !(tatoos.loading || styles.loading)
                     ? children
-                    : <h2><span>Падажи</span><span className="AnimatedEllipsis"></span></h2>
+                    : <h2><span>загрузка</span><span className="AnimatedEllipsis"></span></h2>
                 }
             </div>
         </NavCountProvider>
+
     );
 };
 

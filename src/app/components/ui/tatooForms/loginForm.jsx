@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../hooks/useAuth";
 import useForm from "../../../hooks/useForm";
 import TextField from "../../common/Form/textField/textField";
+import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
-const LoginForm = () => {
+const LoginForm = ({ onSubmit }) => {
     const { data, handleChange } = useForm({ password: "", email: "" });
-    const handleSubmit = (e) => {
+    const { signIn } = useAuth();
+    const [error, setError] = useState({});
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log(data);
+        try {
+            await signIn(data);
+            onSubmit && onSubmit();
+            toast.success("Вы вошли в аккаунт!");
+        } catch (error) {
+            setError(error);
+        }
     };
+    useEffect(() => {
+        setError({});
+    }, [data]);
     return (
         <div className="login-form" >
             <form onSubmit={handleSubmit} className="d-flex flex-column" style={{ height: "100%" }}>
@@ -19,6 +33,7 @@ const LoginForm = () => {
                         onChange={handleChange}
                         label="Email"
                         placeHolder="Введите ваш email"
+                        error={error.email}
                     />
                     <TextField
                         value={data.password}
@@ -38,3 +53,7 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+LoginForm.propTypes = {
+    onSubmit: PropTypes.func
+};

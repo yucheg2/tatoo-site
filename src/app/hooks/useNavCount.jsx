@@ -13,7 +13,10 @@ const NavCountProvider = ({ children }) => {
     function handleDicr() {
         setCount(p => p - 1);
     }
-    return (<NavCountContext.Provider value={{ currentCount, handleDicr, handleInc }}>
+    function clearCount() {
+        setCount(0);
+    }
+    return (<NavCountContext.Provider value={{ clearCount, currentCount, handleDicr, handleInc }}>
         {children}
     </NavCountContext.Provider>);
 };

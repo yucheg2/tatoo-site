@@ -1,7 +1,7 @@
 import httpService from "./httpService";
 
 const tattoosService = {
-    tatoosEndPoint: "tatoos/",
+    tatoosEndPoint: "info/tatoos/",
 
     get: async function() {
         const data = await httpService.get(this.tatoosEndPoint);

@@ -1,7 +1,7 @@
 import httpService from "./httpService";
 
 const stylesService = {
-    stylesEndPoint: "styles/",
+    stylesEndPoint: "info/styles/",
 
     get: async function() {
         const data = await httpService.get(this.stylesEndPoint);

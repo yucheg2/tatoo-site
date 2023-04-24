@@ -4,8 +4,13 @@ import LogRegLayout from "../../../layouts/logRegLayout";
 import Modal from "../../common/modal/modal";
 import routes from "../../../routes";
 import { useNavCount } from "../../../hooks/useNavCount";
+import DropDown from "./dropdown";
+import { useAuth } from "../../../hooks/useAuth";
+import "./index.css";
+
 const NavBar = () => {
     const [show, setShow] = useState(false);
+    const { currentUser } = useAuth();
     const { currentCount } = useNavCount();
     const handleShow = () => {
         setShow(false);
@@ -18,7 +23,7 @@ const NavBar = () => {
     };
     return (
         <>
-            <nav
+            <div
                 className="UnderlineNav"
                 data-color-mode="dark"
                 data-dark-theme="dark"
@@ -45,13 +50,15 @@ const NavBar = () => {
                         })
                     }
                 </div>
-                <div className="UnderlineNav-actions">
-                    <button className="btn btn-primary" onClick={() => { setShow(true); }}>Войти</button>
+                <div className="UnderlineNav-actions" >
+                    {currentUser
+                        ? <DropDown {...currentUser}/>
+                        : <button className="btn btn-primary" onClick={() => { setShow(true); }}>Войти</button>}
                 </div>
-            </nav>
+            </div>
             <Modal onClose={handleShow} show={show}>
                 <div className="register-page d-flex flex-column">
-                    <LogRegLayout onRegSubmit={() => { setShow(false); }}/>
+                    <LogRegLayout init={"log"} onSubmit={() => { setShow(false); }}/>
                 </div>
             </Modal>
         </>

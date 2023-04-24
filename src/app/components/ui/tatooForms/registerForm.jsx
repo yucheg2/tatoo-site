@@ -3,18 +3,27 @@ import TextField from "../../common/Form/textField/textField";
 import validator from "../../../utils/validator";
 import PropTypes from "prop-types";
 import useForm from "../../../hooks/useForm";
+import { useAuth } from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const RegisterForm = ({ onSubmit }) => {
     const initialData = { name: "", password: "", phone: "", email: "" };
     const { data, handleChange, setInitial } = useForm(initialData);
-    const [isBlock, setIsBlock] = useState(true);
     const [error, setError] = useState({});
-    const handleSubmit = (e) => {
+    const isBlock = Object.keys(error).length > 0;
+    const { sugnUp } = useAuth();
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        localStorage.setItem("auth", JSON.stringify(data));
-        setInitial(initialData);
-        onSubmit && onSubmit();
+        try {
+            await sugnUp(data);
+            setInitial(initialData);
+            onSubmit && onSubmit();
+            toast.success("Вы зарегистрированы!");
+        } catch (error) {
+            setError(error);
+        }
     };
+
     const validatotConfig = {
         password: {
             min: {
@@ -45,10 +54,10 @@ const RegisterForm = ({ onSubmit }) => {
         return Object.keys(error).length === 0;
     };
     useEffect(() => {
-        const error = validate();
-        if (error && data.name !== "") {
-            setIsBlock(false);
-        }
+        validate();
+        // if (error && data.name !== "") {
+        //     setIsBlock(false);
+        // }
     }, [data]);
     return (
         <div className="register-form" >

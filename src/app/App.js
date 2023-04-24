@@ -6,6 +6,8 @@ import TatoosProvider from "./hooks/useTatoo";
 import StylesProvider from "./hooks/useStyles";
 import MainPageLayout from "./layouts/mainPageLayout";
 import "react-toastify/dist/ReactToastify.css";
+import AuthProvider from "./hooks/useAuth";
+import MastersProvider from "./hooks/useMasters";
 
 function App() {
     const getRoutes = () => {
@@ -15,15 +17,19 @@ function App() {
     };
     return (
         <BrowserRouter>
-            <StylesProvider>
-                <TatoosProvider>
-                    <MainPageLayout>
-                        <Switch>
-                            {getRoutes()}
-                        </Switch>
-                    </MainPageLayout>
-                </TatoosProvider>
-            </StylesProvider>
+            <AuthProvider>
+                <MastersProvider>
+                    <StylesProvider>
+                        <TatoosProvider>
+                            <MainPageLayout>
+                                <Switch>
+                                    {getRoutes()}
+                                </Switch>
+                            </MainPageLayout>
+                        </TatoosProvider>
+                    </StylesProvider>
+                </MastersProvider>
+            </AuthProvider>
             <ToastContainer />
         </BrowserRouter>
     );

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import StorageList from "../../components/ui/storageList/storageList";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavCount } from "../../hooks/useNavCount";
 import { useTatoos } from "../../hooks/useTatoo";
+import { localStorageService } from "../../services/localstorage.service";
 
 const StoragePage = () => {
+    const { currentUser } = useAuth();
+
     const [items, setItems] = useState([]);
     const { getTatoosBySrc } = useTatoos();
     const { handleDicr } = useNavCount();
@@ -24,6 +28,13 @@ const StoragePage = () => {
         handleDicr();
         localStorage.setItem("store", JSON.stringify(filtred));
     };
+
+    useEffect(() => {
+        if (!localStorageService.getUserId()) {
+            localStorage.removeItem("store");
+            setItems([]);
+        }
+    }, [currentUser]);
     return (
         <div className='container-lg'>
             {(items && items.length > 0)

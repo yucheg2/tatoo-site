@@ -5,11 +5,13 @@ import TatooForm1 from "../tatooForms/tatooForm";
 import Modal from "../../common/modal/modal";
 import LogRegLayout from "../../../layouts/logRegLayout";
 import { useNavCount } from "../../../hooks/useNavCount";
+import { useAuth } from "../../../hooks/useAuth";
 
 const TatoosModal = ({ tatoo, onClose, show }) => {
     const [data, setData] = useState("");
     const [status, setStatus] = useState(1);
     const { handleInc } = useNavCount();
+    const { currentUser } = useAuth();
 
     const handleClose = () => {
         onClose();
@@ -37,7 +39,6 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
         handleClose();
         handleInc();
     };
-    const isAuth = localStorage.getItem("auth");
     return (
         <Modal onClose={handleClose} show={show} >
             <div className="modal-body-content d-flex">
@@ -47,7 +48,7 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
                             <img src={`/${tatoo.src}`} alt="" className="img-modal mr-4 color-shadow-large"/>
                             <div className="d-flex flex-column">
                                 <TatooForm1 tatoo={tatoo} onChange={handleChoose} value={data}/>
-                                {isAuth
+                                {currentUser
                                     ? <button disabled={data === ""} onClick={handleSubmit} className="btn btn-large btn-primary flex-self-end">Заказать</button>
                                     : (
                                         <div className="d-flex flex-column flex-self-end">
@@ -59,7 +60,7 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
                             </div>
                         </div>
                         : <div className="second-page d-flex">
-                            <LogRegLayout onRegSubmit={() => { setStatus(1); }}/>
+                            <LogRegLayout onSubmit={() => { setStatus(1); }}/>
                         </div>}
             </div>
         </Modal>
