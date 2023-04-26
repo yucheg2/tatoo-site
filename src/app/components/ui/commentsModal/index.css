@@ -1,0 +1,9 @@
+.commentsList {
+    min-width: 300px;
+}
+
+.textAria {
+    width: 450px;
+    max-width: 450px;
+    max-height: 90px;
+}

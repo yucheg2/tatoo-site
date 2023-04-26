@@ -10,6 +10,8 @@ const StorageCheckOut = ({ price }) => {
     const { masters } = useMasters();
     const mastersArr = Object.values(masters);
     console.log(data);
+
+    const isDisabled = data.master === "" || data.date === "";
     return (
         <div className="checkout-storage flex-auto ">
             <div className="checkout-content p-2 rounded-left-3 color-shadow-extra-large">
@@ -26,7 +28,7 @@ const StorageCheckOut = ({ price }) => {
                     Итого: {price}
                 </h3>
                 <div className="d-flex flex-justify-end border-top pt-2">
-                    <button className="btn btn-primary">Оплатить</button>
+                    <button disabled={isDisabled} className="btn btn-primary">Оплатить</button>
                 </div>
             </div>
         </div>

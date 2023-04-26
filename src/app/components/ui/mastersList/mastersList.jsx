@@ -5,7 +5,6 @@ import "./index.css";
 
 const MastersList = ({ obj }) => {
     const mastersArr = Object.values(obj);
-    console.log(mastersArr);
     return (
         <div className="clearfix">
             {mastersArr.map((master) => {

@@ -9,15 +9,28 @@ const MastersProvider = ({ children }) => {
     useEffect(() => {
         getMasters();
     }, []);
-    async function getMasters() {
+    function getMasters() {
         try {
-            await mastersService.get().then((data) => { setMasters(data.data); });
+            mastersService.get().then((data) => { setMasters(data.data); });
         } catch (error) {
             toast.error("Ошибка в работе сервера");
         }
     }
+    function updateRate(rate, masterid) {
+        if (masters) {
+            const master = Object.values(masters).find((m) => {
+                return m._id === masterid;
+            });
+            const newRate = Math.floor((master.rate + rate) / 2);
+            try {
+                mastersService.updateRate(masterid, newRate);
+            } catch (error) {
+                toast.error("Ошибка в работе сервера");
+            }
+        }
+    }
     return (
-        <MastersContext.Provider value={{ masters }}>
+        <MastersContext.Provider value={{ masters, updateRate }}>
             {children}
         </MastersContext.Provider>
     );
