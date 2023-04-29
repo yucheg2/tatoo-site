@@ -43,6 +43,7 @@ const StoragePage = () => {
             localStorage.removeItem("store");
             setItems([]);
             clearCount();
+            orderCount.current = cuerrentLenght;
         }
     }, [currentUser]);
     return (
