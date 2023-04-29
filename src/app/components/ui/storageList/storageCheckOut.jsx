@@ -29,11 +29,14 @@ const StorageCheckOut = ({ waiting, price, onSubmit, masters }) => {
                     Итого: {price}
                 </h3>
                 <div className="d-flex flex-justify-end border-top pt-2">
-                    <button onClick={handleSubmit} disabled={isDisabled} className="btn btn-primary">
-                        { waiting
-                            ? <><span>Ожидаем</span><span className="AnimatedEllipsis"></span></>
-                            : "Оплатить"}
-                    </button>
+                    { waiting
+                        ? <button onClick={handleSubmit} disabled={isDisabled} className="btn btn-primary">
+                            <span>Ожидаем</span><span className="AnimatedEllipsis"></span>
+                        </button>
+                        : <button className="btn btn-primary">
+                            Оплатить
+                        </button>
+                    }
                 </div>
             </div>
         </div>
