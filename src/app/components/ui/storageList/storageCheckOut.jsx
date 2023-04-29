@@ -1,15 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DateField from "../../common/Form/dateField/dateField";
-import { useMasters } from "../../../hooks/useMasters";
 import SelectField from "../../common/Form/selectField/selectField";
 import useForm from "../../../hooks/useForm";
 
-const StorageCheckOut = ({ price }) => {
+const StorageCheckOut = ({ waiting, price, onSubmit, masters }) => {
     const { data, handleChange } = useForm({ master: "", date: "" });
-    const { masters } = useMasters();
     const mastersArr = Object.values(masters);
-    console.log(data);
+
+    const handleSubmit = () => {
+        onSubmit(data);
+    };
 
     const isDisabled = data.master === "" || data.date === "";
     return (
@@ -28,7 +29,11 @@ const StorageCheckOut = ({ price }) => {
                     Итого: {price}
                 </h3>
                 <div className="d-flex flex-justify-end border-top pt-2">
-                    <button disabled={isDisabled} className="btn btn-primary">Оплатить</button>
+                    <button onClick={handleSubmit} disabled={isDisabled} className="btn btn-primary">
+                        { waiting
+                            ? <><span>Ожидаем</span><span className="AnimatedEllipsis"></span></>
+                            : "Оплатить"}
+                    </button>
                 </div>
             </div>
         </div>
@@ -38,5 +43,8 @@ const StorageCheckOut = ({ price }) => {
 export default StorageCheckOut;
 
 StorageCheckOut.propTypes = {
+    waiting: PropTypes.bool,
+    masters: PropTypes.object,
+    onSubmit: PropTypes.func,
     price: PropTypes.string
 };

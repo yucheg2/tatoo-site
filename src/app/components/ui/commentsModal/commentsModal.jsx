@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Modal from "../../common/modal/modal";
 import CommentsList from "./commentsList";
@@ -26,22 +26,27 @@ const CommentsModal = ({ show, onClose, comments, masterId }) => {
         updateRate(send.rate, masterId);
         setInitial();
     };
+    useEffect(() => {
+        setInitial();
+    }, [show]);
     return (
         <Modal show={show} onClose={onClose}>
-            { currentUser && <><TextAria
-                name="com"
-                value={data.com}
-                onChange={handleChange}
-                placeHolder="Введите отзыв..."
-            />
-            <p>Оценка работы:</p>
-            <RadioGroupField arr={arr} name="rate" onChange={handleChange} value={data.rate}/>
-            <div className="d-flex flex-justify-end mt-3">
-                <button
-                    disabled={data.com === "" || data.rate === ""}
-                    onClick={handleSubmit}
-                    className="btn btn-primary">Отправить</button>
-            </div></>}
+            { currentUser
+                ? show && <><TextAria
+                    name="com"
+                    value={data.com}
+                    onChange={handleChange}
+                    placeHolder="Введите отзыв..."
+                />
+                <p>Оценка работы:</p>
+                <RadioGroupField arr={arr} name="rate" onChange={handleChange} value={data.rate}/>
+                <div className="d-flex flex-justify-end mt-3">
+                    <button
+                        disabled={data.com === "" || data.rate === ""}
+                        onClick={handleSubmit}
+                        className="btn btn-primary">Отправить</button>
+                </div></>
+                : <h2 className="text-center h2 color-fg-subtle mb-0">Отзывы</h2>}
             <CommentsList comments={comments}/>
         </Modal>
     );

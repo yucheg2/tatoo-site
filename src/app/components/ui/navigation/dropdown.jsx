@@ -7,8 +7,8 @@ const DropDown = ({ name, phone }) => {
     const { signOut } = useAuth();
     const { clearCount } = useNavCount();
     const handleQuit = () => {
-        signOut();
         clearCount();
+        signOut();
     };
     return (
         <div className="dropdown" onClick={handleQuit}>

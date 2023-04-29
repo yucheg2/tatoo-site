@@ -82,7 +82,6 @@ const AuthProvider = ({ children }) => {
     }
 
     function errorCatcher(error) {
-        console.log(error);
         const { message } = error.response.data;
         setError(message);
     }
@@ -96,7 +95,7 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, []);
     return (
-        <AuthContext.Provider value={{ currentUser, sugnUp, signIn, signOut }}>
+        <AuthContext.Provider value={{ currentUser, sugnUp, signIn, signOut, getUser }}>
             {children}
         </AuthContext.Provider>
     );

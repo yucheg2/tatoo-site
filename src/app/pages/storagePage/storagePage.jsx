@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StorageList from "../../components/ui/storageList/storageList";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavCount } from "../../hooks/useNavCount";
@@ -7,10 +7,12 @@ import { localStorageService } from "../../services/localstorage.service";
 
 const StoragePage = () => {
     const { currentUser } = useAuth();
+    const orderCount = useRef((currentUser && currentUser.order) ? Object.values(currentUser.order).length : 0);
 
     const [items, setItems] = useState([]);
     const { getTatoosBySrc } = useTatoos();
     const { handleDicr } = useNavCount();
+    const { clearCount } = useNavCount();
     const storage = localStorage.getItem("store");
 
     useEffect(() => {
@@ -30,9 +32,17 @@ const StoragePage = () => {
     };
 
     useEffect(() => {
+        const cuerrentLenght = currentUser && currentUser.order
+            ? Object.values(currentUser.order).length
+            : 0;
         if (!localStorageService.getUserId()) {
             localStorage.removeItem("store");
             setItems([]);
+        }
+        if (cuerrentLenght > orderCount.current) {
+            localStorage.removeItem("store");
+            setItems([]);
+            clearCount();
         }
     }, [currentUser]);
     return (

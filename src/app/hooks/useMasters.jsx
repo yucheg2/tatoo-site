@@ -1,11 +1,17 @@
+/* eslint-disable no-unsafe-finally */
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import mastersService from "../services/mastersService";
+import { useAuth } from "./useAuth";
+import userServuse from "../services/users.servise";
+
 const MastersContext = React.createContext();
 
 const MastersProvider = ({ children }) => {
     const [masters, setMasters] = useState();
+    const [waiting, setWaiting] = useState(false);
+    const { currentUser, getUser } = useAuth();
     useEffect(() => {
         getMasters();
     }, []);
@@ -29,8 +35,43 @@ const MastersProvider = ({ children }) => {
             }
         }
     }
+    function takeOrder(tatoos, orderData) {
+        let result = false;
+        const sendData = (toMaster) => ({
+            date: orderData.date,
+            order: JSON.stringify(tatoos),
+            person: toMaster ? currentUser : orderData.master
+        });
+        setWaiting(() => true);
+        try {
+            Promise.all([mastersService.takeOrder(orderData.master, sendData(true)),
+                userServuse.takeOrder(currentUser._id, sendData(false))])
+                .then((data) => {
+                    const issue = data.find((res) => typeof (res) === "string");
+                    if (issue) {
+                        toast.error(issue);
+                        setWaiting(() => false);
+                        if (!(data.every((res) => typeof (res) === "string"))) {
+                            if (issue === "Мастер в этот день зянят.") {
+                                userServuse.clearOrder(currentUser._id, orderData.date);
+                            } else {
+                                mastersService.clearOrder(orderData.master, orderData.date);
+                            }
+                        }
+                    } else {
+                        toast.success("Заказ принят!");
+                        getUser();
+                        setWaiting(() => false);
+                        result = true;
+                    }
+                    return result;
+                });
+        } catch (error) {
+            toast.error("Ошибка в работе сервера");
+        }
+    }
     return (
-        <MastersContext.Provider value={{ masters, updateRate }}>
+        <MastersContext.Provider value={{ waiting, masters, updateRate, takeOrder }}>
             {children}
         </MastersContext.Provider>
     );
