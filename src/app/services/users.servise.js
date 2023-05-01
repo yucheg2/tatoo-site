@@ -11,6 +11,10 @@ const userServuse = {
         const { data } = await httpService.get(usersEndPoint + id);
         return data;
     },
+    edit: async(payload) => {
+        const { data } = await httpService.put(usersEndPoint + payload._id, payload);
+        return data;
+    },
     takeOrder: async(id, orderData) => {
         const endPoint = usersEndPoint + `${id}/order/${orderData.date}`;
 

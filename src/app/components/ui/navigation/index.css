@@ -1,10 +1,8 @@
-
-.UnderlineNav {
-    width: 100%;
-    height: 100%;
+.dd-list {
+    position: absolute;
+    top: 48px;
 }
 
-.dropdown {
-    width: 100%;
-    height: 100%;
+.dropdown-item {
+    user-select: none;
 }

@@ -10,7 +10,7 @@ const RegisterForm = ({ onSubmit }) => {
     const initialData = { name: "", password: "", phone: "", email: "" };
     const { data, handleChange, setInitial } = useForm(initialData);
     const [error, setError] = useState({});
-    const isBlock = Object.keys(error).length > 0;
+    const isBlock = Object.keys(error).length > 0 || Object.values(data).some((s) => s === "");
     const { sugnUp } = useAuth();
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -55,9 +55,6 @@ const RegisterForm = ({ onSubmit }) => {
     };
     useEffect(() => {
         validate();
-        // if (error && data.name !== "") {
-        //     setIsBlock(false);
-        // }
     }, [data]);
     return (
         <div className="register-form" >

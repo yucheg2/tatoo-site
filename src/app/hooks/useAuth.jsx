@@ -57,10 +57,20 @@ const AuthProvider = ({ children }) => {
             const { code, message } = error.response.data.error;
             if (code === 400) {
                 const errorObj = { email: "Почта или пароль введены неверно." };
-                if (message === "EMAIL_NOT_FOUND" || message === "INVALID_PASSWORD") {
+                if (message === "EMAIL_NOT_FOUND" || message === "INVALID_PASSWORD" || message === "INVALID_EMAIL") {
                     throw errorObj;
                 }
             }
+        }
+    }
+
+    async function edit(newData) {
+        const payload = { ...currentUser, ...newData };
+        try {
+            await userServuse.edit(payload);
+            setCurrentUser(payload);
+        } catch (error) {
+            errorCatcher(error);
         }
     }
 
@@ -95,7 +105,7 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, []);
     return (
-        <AuthContext.Provider value={{ currentUser, sugnUp, signIn, signOut, getUser }}>
+        <AuthContext.Provider value={{ currentUser, edit, sugnUp, signIn, signOut, getUser }}>
             {children}
         </AuthContext.Provider>
     );

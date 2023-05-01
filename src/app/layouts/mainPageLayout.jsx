@@ -13,8 +13,8 @@ const MainPageLayout = ({ children }) => {
     const styles = useStyles();
     return (
         <NavCountProvider>
-            <div className="mainPageLayout" >
-                <header data-color-mode="dark">
+            <header className="mainPageLayout" >
+                <div data-color-mode="dark">
                     <NavBar />
                     <div className="d-flex p-4 flex-justify-center color-bg-subtle mb-2" >
                         <div className="mr-4">
@@ -25,12 +25,12 @@ const MainPageLayout = ({ children }) => {
                         Записатсья на консультацию
                         </button>
                     </div>
-                </header>
-                { !(tatoos.loading || styles.loading)
-                    ? children
-                    : <h2><span>загрузка</span><span className="AnimatedEllipsis"></span></h2>
-                }
-            </div>
+                </div>
+            </header>
+            { !(tatoos.loading || styles.loading)
+                ? children
+                : <h2><span>загрузка</span><span className="AnimatedEllipsis"></span></h2>
+            }
         </NavCountProvider>
 
     );

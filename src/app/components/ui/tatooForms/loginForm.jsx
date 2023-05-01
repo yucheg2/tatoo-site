@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 const LoginForm = ({ onSubmit }) => {
     const { data, handleChange } = useForm({ password: "", email: "" });
+    const isBlock = Object.values(data).some(s => s === "");
     const { signIn } = useAuth();
     const [error, setError] = useState({});
     const handleSubmit = async(e) => {
@@ -44,7 +45,7 @@ const LoginForm = ({ onSubmit }) => {
                         type="password"
                     />
                 </div>
-                <button className="btn btn-primary btn-block mb-3 h3 p-2">
+                <button disabled={isBlock} className="btn btn-primary btn-block mb-3 h3 p-2">
                     Войти
                 </button>
             </form>
