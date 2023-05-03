@@ -1,0 +1,17 @@
+.carousel-main {
+    width: 600px;
+}
+
+.carousel-window {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-items {
+    height: 100%;
+
+    transition: translate;
+    transition-property: transform;
+    transition-duration: 0.6s;
+}

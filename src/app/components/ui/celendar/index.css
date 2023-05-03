@@ -1,0 +1,11 @@
+.celendarTatooImg {
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+    vertical-align:middle;
+    transition: 0,5s;
+}
+
+.celendar {
+    width: 750px;
+}

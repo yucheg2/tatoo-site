@@ -70,8 +70,12 @@ const MastersProvider = ({ children }) => {
             toast.error("Ошибка в работе сервера");
         }
     }
+
+    function getMasterById(id) {
+        return masters && masters[id];
+    }
     return (
-        <MastersContext.Provider value={{ waiting, masters, updateRate, takeOrder }}>
+        <MastersContext.Provider value={{ waiting, masters, getMasterById, updateRate, takeOrder }}>
             {children}
         </MastersContext.Provider>
     );

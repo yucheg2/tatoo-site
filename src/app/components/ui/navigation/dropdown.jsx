@@ -4,6 +4,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useNavCount } from "../../../hooks/useNavCount";
 import Modal from "../../common/modal/modal";
 import EditForm from "../editForm/editForm";
+import Celendar from "../celendar/celendar";
 
 const DropDown = ({ name, phone, order }) => {
     const { signOut } = useAuth();
@@ -39,7 +40,7 @@ const DropDown = ({ name, phone, order }) => {
                 <button className="btn" onClick={() => { setOpen((p) => !p); }}>
                     {name}
                     {
-                        order && !open.dd &&
+                        order && !open &&
                         <span className="Counter mr-1 color-bg-success-emphasis color-fg-on-emphasis">
                             {orderLength}
                         </span>
@@ -61,12 +62,14 @@ const DropDown = ({ name, phone, order }) => {
                     <a className="dropdown-item" onClick={handleQuit}>Выйти</a>
                 </li>
             </ul>}
-            <Modal show={show} onClose={handleCloseModal}>
-                {status === "Edit"
-                    ? <EditForm name={name} phone={phone}/>
-                    : <div>Заказы</div>
-                }
-            </Modal>
+            <div data-color-mode="light" data-light-theme="light">
+                <Modal show={show} onClose={handleCloseModal}>
+                    {status === "Edit"
+                        ? <EditForm name={name} phone={phone}/>
+                        : <Celendar order={order}/>
+                    }
+                </Modal>
+            </div>
         </div>
     );
 };

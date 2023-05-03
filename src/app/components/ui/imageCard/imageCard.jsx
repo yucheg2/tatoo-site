@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
-const ImageCard = ({ count, name, onClick, tatoo }) => {
+const ImageCard = ({ onClick, tatoo }) => {
     const imageBlock = useRef();
     const handleHover = () => {
         imageBlock.current.children[0].style.width = "100%";
@@ -37,11 +37,6 @@ const ImageCard = ({ count, name, onClick, tatoo }) => {
                     paddingTop: "55%"
                 }}
             >
-                {name && <h2>{name}</h2>}
-                {count && <div className="count">
-                    <p >{count}</p>
-                </div>}
-
                 <p
                     className="p color-fg-default text-bold"
                     style={{
@@ -58,8 +53,6 @@ const ImageCard = ({ count, name, onClick, tatoo }) => {
 
 ImageCard.propTypes = {
     onClick: PropTypes.func,
-    name: PropTypes.string,
-    count: PropTypes.number,
     tatoo: PropTypes.object
 };
 

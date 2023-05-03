@@ -16,7 +16,7 @@ const MasterItem = ({ name, img, rate, description, favStyles, _id }) => {
     };
     return (
         <div className="col-9 mx-auto d-flex">
-            <img className="avatar mt-2 mr-3" src={img} alt="" />
+            <img className="masterAvatar mt-2 mr-3" src={img} alt="" />
             <div>
                 <div className="d-flex">
                     <p className="h3 flex-auto">{name}</p>

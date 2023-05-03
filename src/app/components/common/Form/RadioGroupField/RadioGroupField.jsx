@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-const RadioGroupField = ({ arr, name, onChange, value }) => {
+const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onChange, value }) => {
     const handleChange = ({ target }) => {
         onChange({ [name]: target.value });
     };
@@ -12,7 +12,7 @@ const RadioGroupField = ({ arr, name, onChange, value }) => {
         <div
             className="radio-group"
         >
-            <div className="d-flex flex-wrap">
+            <div className={display + " flex-wrap"}>
                 {arr.length > 1
                     ? arr.map((el) => {
                         return (
@@ -25,8 +25,21 @@ const RadioGroupField = ({ arr, name, onChange, value }) => {
                                     value={el}
                                     name={el}
                                     checked= {value === el}
+                                    style={!showCircle
+                                        ? {
+                                            display: "none",
+                                            appearance: "none",
+                                            WebkitAppearance: "none",
+                                            MozAppearance: "none"
+                                        }
+                                        : {}}
                                 />
-                                <label className="radio-label" htmlFor={el}>{el}</label>
+                                <label
+                                    className={"radio-label" + (!showCircle ? " px-2" : "")}
+                                    htmlFor={el}
+                                >
+                                    {el}
+                                </label>
                             </div>
                         );
                     })
@@ -38,6 +51,8 @@ const RadioGroupField = ({ arr, name, onChange, value }) => {
 };
 
 RadioGroupField.propTypes = {
+    showCircle: PropTypes.bool,
+    display: PropTypes.string,
     arr: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onChange: PropTypes.func,
