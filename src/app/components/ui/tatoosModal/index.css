@@ -3,7 +3,7 @@
     object-fit: cover;
     max-width: 300px;
     height: 500px;
-    vertical-align:middle;
+    /* vertical-align:middle; */
 }
 
 .modal-body-content {

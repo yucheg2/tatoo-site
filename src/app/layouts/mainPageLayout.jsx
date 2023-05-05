@@ -29,7 +29,7 @@ const MainPageLayout = ({ children }) => {
             </header>
             { !(tatoos.loading || styles.loading)
                 ? children
-                : <h2><span>загрузка</span><span className="AnimatedEllipsis"></span></h2>
+                : <h1 className="text-center"><span>загрузка</span><span className="AnimatedEllipsis"></span></h1>
             }
         </NavCountProvider>
 

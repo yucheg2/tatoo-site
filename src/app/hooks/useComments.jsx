@@ -9,6 +9,7 @@ export const useComents = () => useContext(CommentsContext);
 
 const CommentsProvider = ({ children }) => {
     const [comments, setComments] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const addComment = async(masterId, data) => {
         try {
@@ -27,6 +28,7 @@ const CommentsProvider = ({ children }) => {
             } else {
                 setComments([]);
             }
+            setLoading(false);
         } catch (error) {
             errorCatcher(error);
         }
@@ -42,7 +44,7 @@ const CommentsProvider = ({ children }) => {
         }
     }, [error]);
     return (
-        <CommentsContext.Provider value={{ comments, getComments, addComment }}>
+        <CommentsContext.Provider value={{ loading, comments, getComments, addComment }}>
             {children}
         </CommentsContext.Provider>
     );

@@ -4,7 +4,9 @@ import Places from "../../common/Form/radioGroupField/radioGroupField";
 
 const TatooForm = ({ tatoo, onChange, value }) => {
     const handleChange = (target) => {
-        onChange(target.places);
+        if (onChange) {
+            onChange(target.places);
+        }
     };
     return (
         <div className="flex-1" >

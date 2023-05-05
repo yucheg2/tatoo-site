@@ -36,7 +36,6 @@ const MastersProvider = ({ children }) => {
         }
     }
     function takeOrder(tatoos, orderData) {
-        let result = false;
         const sendData = (toMaster) => ({
             date: orderData.date,
             order: JSON.stringify(tatoos),
@@ -59,12 +58,10 @@ const MastersProvider = ({ children }) => {
                             }
                         }
                     } else {
-                        toast.success("Заказ принят!");
+                        toast.success("Вы записаны на сеанс!");
                         getUser();
                         setWaiting(() => false);
-                        result = true;
                     }
-                    return result;
                 });
         } catch (error) {
             toast.error("Ошибка в работе сервера");

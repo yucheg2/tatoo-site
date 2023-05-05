@@ -1,24 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import "./index.css";
 
 const StyleCard = ({ linkTo, img, name, count }) => {
     return (
-        <Link to={linkTo}>
-            <div
-                className="container p-3"
-                style={{
-                    backgroundImage: `url( ${img} )`,
-                    backgroundSize: "cover",
-                    height: "350px"
-                }}
-            >
-                {name && <h2>{name}</h2>}
-                {count && <div className="count">
-                    <p>{count}</p>
-                </div>}
-            </div>
-        </Link>
+        <div className="styleContainer">
+            <Link
+                className="styleLink"
+                to={linkTo}
+                style={{ textDecoration: "none" }}>
+                <div style={{
+                    position: "relative",
+                    width: "100%",
+                    overflow: "hidden"
+                }}>
+                    <div
+                        className="styleImg container "
+                        style= {{ backgroundImage: `url(${img})` }}
+                        alt="style"
+                    >
+                    </div>
+                    <div className="styleTxt p-3 ">
+                        {name && <h2 className="color-fg-on-emphasis">{name}</h2>}
+                        {count && <p className="color-fg-on-emphasis">{count}</p>}
+                    </div>
+                </div>
+            </Link>
+        </div>
     );
 };
 

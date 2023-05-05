@@ -6,7 +6,7 @@ import Modal from "../../common/modal/modal";
 import EditForm from "../editForm/editForm";
 import Celendar from "../celendar/celendar";
 
-const DropDown = ({ name, phone, order }) => {
+const DropDown = (data) => {
     const { signOut } = useAuth();
     const { clearCount } = useNavCount();
     const handleQuit = () => {
@@ -17,7 +17,7 @@ const DropDown = ({ name, phone, order }) => {
     const [show, setShow] = useState(false);
     const [status, setStatus] = useState("");
 
-    const orderLength = Object.values(order).length;
+    const orderLength = Object.values(data.order).length;
 
     const handleEdit = () => {
         setOpen(false);
@@ -38,9 +38,9 @@ const DropDown = ({ name, phone, order }) => {
         <div className="dd-wrapper">
             <div className="dd-header">
                 <button className="btn" onClick={() => { setOpen((p) => !p); }}>
-                    {name}
+                    {data.name}
                     {
-                        order && !open &&
+                        data.order && !open &&
                         <span className="Counter mr-1 color-bg-success-emphasis color-fg-on-emphasis">
                             {orderLength}
                         </span>
@@ -55,7 +55,7 @@ const DropDown = ({ name, phone, order }) => {
                 </li>
                 <li className="dd-list-item">
                     <a className="dropdown-item" onClick={handleSession}>Сеансы
-                        {order && <span className="Counter mr-1">{orderLength}</span>}
+                        {data.order && <span className="Counter mr-1">{orderLength}</span>}
                     </a>
                 </li>
                 <li className="dd-list-item">
@@ -65,8 +65,8 @@ const DropDown = ({ name, phone, order }) => {
             <div data-color-mode="light" data-light-theme="light">
                 <Modal show={show} onClose={handleCloseModal}>
                     {status === "Edit"
-                        ? <EditForm name={name} phone={phone}/>
-                        : <Celendar order={order}/>
+                        ? <EditForm {...data}/>
+                        : <Celendar order={data.order}/>
                     }
                 </Modal>
             </div>

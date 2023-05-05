@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { localStorageService, setTokens } from "../services/localstorage.service";
 import userServuse from "../services/users.servise";
+import mastersService from "../services/mastersService";
 
 const AuthContext = React.createContext();
 
@@ -65,10 +66,41 @@ const AuthProvider = ({ children }) => {
     }
 
     async function edit(newData) {
+        const url = "accounts:update";
         const payload = { ...currentUser, ...newData };
+        const accessToken = localStorageService.getAccessTokent();
         try {
+            const { data } = await httpAuth.post(url, { idToken: accessToken, email: payload.email, returnSecureToken: true });
+            setTokens(data);
             await userServuse.edit(payload);
             setCurrentUser(payload);
+            toast.success("Данные изменены!");
+        } catch (error) {
+            const { message } = error.response.data.error;
+            if (message === "CREDENTIAL_TOO_OLD_LOGIN_AGAIN") {
+                const errObj = { password: "Введите пароль чтобы изменить почту" };
+                throw errObj;
+            }
+            errorCatcher(error);
+        }
+    }
+
+    console.log(currentUser);
+    async function cancelOrder(orderData) {
+        try {
+            await Promise.all([
+                userServuse.clearOrder(currentUser._id, orderData.date),
+                mastersService.clearOrder(orderData.master, orderData.date)
+            ]).then(() => {
+                const newObj = {};
+                Object.keys(currentUser.order).forEach((date) => {
+                    if (date !== orderData.date) {
+                        newObj[date] = currentUser.order[date];
+                    };
+                });
+                setCurrentUser(p => ({ ...p, order: newObj }));
+                toast.dark("Заказ отменен");
+            });
         } catch (error) {
             errorCatcher(error);
         }
@@ -105,7 +137,7 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, []);
     return (
-        <AuthContext.Provider value={{ currentUser, edit, sugnUp, signIn, signOut, getUser }}>
+        <AuthContext.Provider value={{ currentUser, cancelOrder, edit, sugnUp, signIn, signOut, getUser }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,0 +1,19 @@
+.styleImg {
+    display: block;
+    object-fit: cover;
+    background-size: cover;
+    height: 350px;
+    width: 350px;
+    transition: 200ms;
+}
+
+.styleTxt {
+    box-shadow: inset 0px 70px 15px 0px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.styleImg:hover {
+    transform: scale(1.2);
+}

@@ -19,10 +19,10 @@ const MasterItem = ({ name, img, rate, description, favStyles, _id }) => {
             <img className="masterAvatar mt-2 mr-3" src={img} alt="" />
             <div>
                 <div className="d-flex">
-                    <p className="h3 flex-auto">{name}</p>
+                    <p className="h2 flex-auto">{name}</p>
                     <p className="text-semibold"> Рейтинг: {rate}/5</p>
                 </div>
-                <p role="button">{description}</p>
+                <p className="lead">{description}</p>
                 <div className="d-flex">
                     <a onClick={openComments} className="Link flex-auto mt-1">Отзывы</a>
                     <div className="favStyles d-flex">

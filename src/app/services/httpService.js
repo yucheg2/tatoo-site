@@ -17,7 +17,7 @@ axios.interceptors.request.use(
         }
         const expirecDate = localStorageService.getExpires();
         const refreshToken = localStorageService.getRefreshToken();
-        if (refreshToken && expirecDate < Date.now()) {
+        if (refreshToken && Number(expirecDate) < Date.now()) {
             const { data } = await httpAuth.post("token", {
                 grant_type: "refresh_token",
                 refresh_token: refreshToken

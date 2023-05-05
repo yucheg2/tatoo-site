@@ -6,3 +6,7 @@
 .dropdown-item {
     user-select: none;
 }
+
+.UnderlineNav {
+    width: 100%
+}

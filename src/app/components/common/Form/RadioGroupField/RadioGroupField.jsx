@@ -35,7 +35,7 @@ const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onC
                                         : {}}
                                 />
                                 <label
-                                    className={"radio-label" + (!showCircle ? " px-2" : "")}
+                                    className={"radio-label" + (!showCircle ? " px-2" : " ") }
                                     htmlFor={el}
                                 >
                                     {el}

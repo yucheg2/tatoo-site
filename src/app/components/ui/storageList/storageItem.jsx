@@ -10,17 +10,17 @@ const StorageItem = ({ _id, src, place, size, style, onDelete, price }) => {
             <div className="item-info d-flex flex-column flex-auto mr-2">
                 <div className="d-flex flex-column flex-auto ">
                     <div className="storage-place border-bottom pt-3">
-                        <p className="h3 m-0">Место нанесения: {place}</p>
+                        <p className="h2 m-0">Место нанесения: {place}</p>
                     </div>
                     <div className="storage-size pt-3 border-bottom ">
-                        <p className="h3 m-0">Размер: {size.name}</p>
+                        <p className="h2 m-0">Размер: {size.name}</p>
                         <span className="text-light">{`Примерно ${size.size}`}</span>
                     </div>
                     <div className="storage-style pt-3 border-bottom ">
-                        <p className="h3 m-0">Стиль: {style}</p>
+                        <p className="h2 m-0">Стиль: {style}</p>
                     </div>
                 </div>
-                <p className="flex-self-end">{getTatooPrice({ size, price }) + " руб."}</p>
+                <p className="flex-self-end f4">{getTatooPrice({ size, price }) + " руб."}</p>
             </div>
             <button onClick={() => { onDelete(_id); }} className="btn btn-danger flex-self-start">
                 <TrashIcon size={16}/>

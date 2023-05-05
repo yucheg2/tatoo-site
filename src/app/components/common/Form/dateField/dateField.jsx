@@ -15,7 +15,7 @@ const DateField = ({ label, name, value, onChange }) => {
     };
     return (
         <div className="d-flex">
-            <label htmlFor="date" className="h2 mr-2">{label}</label>
+            <label htmlFor="date" className="h3 mr-2">{label}</label>
             <input type="date" onChange={handleChange} value={value} className="border rounded" name={name} min={getMin()}/>
         </div>
     );

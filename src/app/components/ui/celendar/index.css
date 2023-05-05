@@ -1,11 +1,22 @@
-.celendarTatooImg {
+.celendarTatooImg img{
     object-fit: cover;
     width: 300px;
     height: 300px;
     vertical-align:middle;
-    transition: 0,5s;
+    transition: 150ms;
+}
+
+.celendarTatooImg {
+    min-width: 300px;
+    display: inline-block;
+    overflow: hidden;
 }
 
 .celendar {
     width: 750px;
+}
+
+.celendarTatooImg:hover img {
+    cursor: pointer;
+    transform: scale(1.2);
 }

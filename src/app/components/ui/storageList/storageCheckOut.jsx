@@ -25,16 +25,16 @@ const StorageCheckOut = ({ waiting, price, onSubmit, masters }) => {
                     name="master"
                 />
                 <DateField name="date" onChange={handleChange} value={data.date} label="Выберите дату"/>
-                <h3 className="text-right mt-2">
-                    Итого: {price}
-                </h3>
+                <h4 className="text-right mt-2">
+                    Примерная стоимость: {price}
+                </h4>
                 <div className="d-flex flex-justify-end border-top pt-2">
                     { waiting
                         ? <button className="btn btn-primary">
                             <span>Ожидаем</span><span className="AnimatedEllipsis"></span>
                         </button>
                         : <button className="btn btn-primary" disabled={isDisabled} onClick={handleSubmit}>
-                            Оплатить
+                            Записаться
                         </button>
                     }
                 </div>

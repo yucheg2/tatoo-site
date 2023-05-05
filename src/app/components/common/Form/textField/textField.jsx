@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ReactComponent as EyeOpen } from "../../../../../icons/eyeIcon.svg";
 import { ReactComponent as EyeClosedIcon } from "../../../../../icons/eyeCloseIcon.svg";
 
-const TextField = ({ value, name, onChange, label, type, placeHolder, error }) => {
+const TextField = ({ errOnFirstRender, value, name, onChange, label, type, placeHolder, error }) => {
     const [ShowPassword, setShowPassword] = useState(false);
     const renderCount = useRef(0);
     useEffect(() => {
@@ -46,7 +46,7 @@ const TextField = ({ value, name, onChange, label, type, placeHolder, error }) =
                 )
                 }
             </div>
-            {(error && renderCount.current > 1) && <p className="note error" id="username-input-validation">
+            {(error && (errOnFirstRender || renderCount.current > 1)) && <p className="note error" id="username-input-validation">
                 {error}
             </p>}
         </div>
@@ -58,6 +58,7 @@ TextField.defaultProps = {
 };
 
 TextField.propTypes = {
+    errOnFirstRender: PropTypes.bool,
     error: PropTypes.string,
     placeHolder: PropTypes.string,
     type: PropTypes.string,

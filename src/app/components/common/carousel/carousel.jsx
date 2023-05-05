@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import PaginationNP from "../paginationNP";
 import "./index.css";
 
-const Carousel = ({ children, pageNumber, pagesCount, onPageDicrement, onPageIncrement }) => {
+const Carousel = ({ children, pageNumber }) => {
     return (
         <div className="carousel-main">
             <div className="carousel-window">
@@ -16,12 +15,6 @@ const Carousel = ({ children, pageNumber, pagesCount, onPageDicrement, onPageInc
                     {children}
                 </div>
             </div>
-
-            {pagesCount > 1 && <PaginationNP
-                pageNumber={pageNumber}
-                pagesCount={pagesCount}
-                onPageDicrement={onPageDicrement}
-                onPageIncrement={onPageIncrement}/>}
         </div>
     );
 };
@@ -30,8 +23,5 @@ export default Carousel;
 
 Carousel.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-    onPageIncrement: PropTypes.func.isRequired,
-    onPageDicrement: PropTypes.func.isRequired,
-    pageNumber: PropTypes.number.isRequired,
-    pagesCount: PropTypes.number.isRequired
+    pageNumber: PropTypes.number.isRequired
 };

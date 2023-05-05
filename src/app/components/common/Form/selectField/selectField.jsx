@@ -8,7 +8,7 @@ const SelectField = ({ arr, label, value, onChange, name, defaultOption }) => {
     return (
         <div className="form-group d-flex">
             <div className="form-group-header">
-                <label htmlFor="masters-select" className="h2 mr-2">{label}</label>
+                <label htmlFor="masters-select" className="h3 mr-2">{label}</label>
             </div>
             <div className="form-group-body">
                 <select
