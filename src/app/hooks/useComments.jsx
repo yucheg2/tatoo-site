@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import commentsService from "../services/commentsService";
 import { toast } from "react-toastify";
+import userServuse from "../services/users.servise";
 
 const CommentsContext = React.createContext();
 
@@ -37,6 +38,14 @@ const CommentsProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
+    const getName = async(id) => {
+        try {
+            const data = await userServuse.getById(id);
+            return data.name;
+        } catch (error) {
+            errorCatcher(error);
+        }
+    };
     useEffect(() => {
         if (error !== null) {
             toast.error(error);
@@ -44,7 +53,7 @@ const CommentsProvider = ({ children }) => {
         }
     }, [error]);
     return (
-        <CommentsContext.Provider value={{ loading, comments, getComments, addComment }}>
+        <CommentsContext.Provider value={{ loading, comments, getComments, addComment, getName }}>
             {children}
         </CommentsContext.Provider>
     );

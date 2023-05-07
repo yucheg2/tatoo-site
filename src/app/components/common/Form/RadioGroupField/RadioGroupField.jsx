@@ -13,8 +13,8 @@ const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onC
             className="radio-group"
         >
             <div className={display + " flex-wrap"}>
-                {arr.length > 1
-                    ? arr.map((el) => {
+                {
+                    arr.map((el) => {
                         return (
                             <div key={el} className="mr-2 mb-2">
                                 <input
@@ -43,7 +43,6 @@ const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onC
                             </div>
                         );
                     })
-                    : <p className="border rounded-2 p-2" style={{ userSelect: "none" }}>{arr[0]}</p>
                 }
             </div>
         </div>

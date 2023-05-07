@@ -12,7 +12,7 @@ const TextAria = ({ label, name, value = "", onChange, placeHolder }) => {
             </div>}
             <div className="form-group-body">
                 <textarea
-                    className="textAria border rounded"
+                    className="form-control border rounded"
                     value={value}
                     id={name}
                     name={name}

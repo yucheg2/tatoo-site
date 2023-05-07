@@ -22,14 +22,18 @@ const MastersProvider = ({ children }) => {
             toast.error("Ошибка в работе сервера");
         }
     }
-    function updateRate(rate, masterid) {
+    async function updateRate(rate, masterid) {
         if (masters) {
             const master = Object.values(masters).find((m) => {
                 return m._id === masterid;
             });
-            const newRate = Math.floor((master.rate + rate) / 2);
+            const newRate = Math.ceil((master.rate + rate) / 2);
             try {
-                mastersService.updateRate(masterid, newRate);
+                await mastersService.updateRate(masterid, newRate);
+                setMasters(p => {
+                    p[masterid].rate = newRate;
+                    return p;
+                });
             } catch (error) {
                 toast.error("Ошибка в работе сервера");
             }
@@ -58,7 +62,7 @@ const MastersProvider = ({ children }) => {
                             }
                         }
                     } else {
-                        toast.success("Вы записаны на сеанс!");
+                        toast.success("Вы записаны на сеанс!", { position: "bottom-right", theme: "dark" });
                         getUser();
                         setWaiting(() => false);
                     }

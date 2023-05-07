@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Carousel from "../../common/carousel/carousel";
 import PaginationNP from "../../common/paginationNP";
 
-const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel }) => {
+const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedback }) => {
     const [page, setPage] = useState(1);
     const pagesCount = orders.length - 1;
 
@@ -54,7 +54,9 @@ const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel }) => {
                 onPageIncrement={handleInc}/>}
             <div className="d-flex flex-justify-end pt-3">
                 {compleat
-                    ? <button className="btn btn-primary ">Оставить отзыв</button>
+                    ? <button className="btn btn-primary"
+                        onClick={onFeedback}
+                    >Оставить отзыв</button>
                     : (<button
                         className="btn btn-danger"
                         onClick={() => { onCancel({ master: master.id, date }); }}
@@ -70,6 +72,7 @@ const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel }) => {
 export default OrderBlock;
 
 OrderBlock.propTypes = {
+    onFeedback: PropTypes.func,
     date: PropTypes.string,
     onCancel: PropTypes.func,
     compleat: PropTypes.bool,

@@ -84,9 +84,7 @@ const AuthProvider = ({ children }) => {
             errorCatcher(error);
         }
     }
-
-    console.log(currentUser);
-    async function cancelOrder(orderData) {
+    async function cancelOrder(orderData, txt) {
         try {
             await Promise.all([
                 userServuse.clearOrder(currentUser._id, orderData.date),
@@ -99,7 +97,7 @@ const AuthProvider = ({ children }) => {
                     };
                 });
                 setCurrentUser(p => ({ ...p, order: newObj }));
-                toast.dark("Заказ отменен");
+                toast.dark(txt);
             });
         } catch (error) {
             errorCatcher(error);

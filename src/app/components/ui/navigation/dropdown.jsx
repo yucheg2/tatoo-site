@@ -17,7 +17,7 @@ const DropDown = (data) => {
     const [show, setShow] = useState(false);
     const [status, setStatus] = useState("");
 
-    const orderLength = Object.values(data.order).length;
+    const orderLength = data?.order && Object.values(data.order).length;
 
     const handleEdit = () => {
         setOpen(false);
@@ -40,8 +40,8 @@ const DropDown = (data) => {
                 <button className="btn" onClick={() => { setOpen((p) => !p); }}>
                     {data.name}
                     {
-                        data.order && !open &&
-                        <span className="Counter mr-1 color-bg-success-emphasis color-fg-on-emphasis">
+                        data.order && !open && orderLength > 0 &&
+                        <span className="Counter mr-1 color-bg-success-emphasis color-fg-on-emphasis anim-scale-in">
                             {orderLength}
                         </span>
                     }
