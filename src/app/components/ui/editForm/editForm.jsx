@@ -17,7 +17,7 @@ const EditForm = ({ name, phone, email }) => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            await edit(data);
+            await edit(data, email !== data.email);
         } catch (error) {
             setError(error);
         }

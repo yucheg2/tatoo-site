@@ -15,8 +15,11 @@ const TextField = ({ errOnFirstRender, value, name, onChange, label, type, place
     const handleChange = ({ target }) => {
         onChange({ [target.name]: target.value });
     };
+    const checkShowError = () => {
+        return (error && (errOnFirstRender || renderCount.current > 1));
+    };
     return (
-        <div className={"form-group " + (error && renderCount.current > 1 ? "errored" : "")}>
+        <div className={"form-group " + (checkShowError() ? "errored" : "")}>
             <div className="form-group-header">
                 <label htmlFor={name} className="h3">{label}</label>
             </div>
@@ -46,7 +49,7 @@ const TextField = ({ errOnFirstRender, value, name, onChange, label, type, place
                 )
                 }
             </div>
-            {(error && (errOnFirstRender || renderCount.current > 1)) && <p className="note error" id="username-input-validation">
+            {checkShowError() && <p className="note error" id="username-input-validation">
                 {error}
             </p>}
         </div>

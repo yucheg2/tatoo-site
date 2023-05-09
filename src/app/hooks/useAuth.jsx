@@ -65,13 +65,15 @@ const AuthProvider = ({ children }) => {
         }
     }
 
-    async function edit(newData) {
+    async function edit(newData, emailChanged) {
         const url = "accounts:update";
         const payload = { ...currentUser, ...newData };
         const accessToken = localStorageService.getAccessTokent();
         try {
-            const { data } = await httpAuth.post(url, { idToken: accessToken, email: payload.email, returnSecureToken: true });
-            setTokens(data);
+            if (emailChanged) {
+                const { data } = await httpAuth.post(url, { idToken: accessToken, email: payload.email, returnSecureToken: true });
+                setTokens(data);
+            }
             await userServuse.edit(payload);
             setCurrentUser(payload);
             toast.success("Данные изменены!");
