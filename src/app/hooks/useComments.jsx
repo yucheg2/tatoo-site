@@ -22,6 +22,7 @@ const CommentsProvider = ({ children }) => {
         }
     };
     const getComments = async(masterId) => {
+        setLoading(true);
         try {
             const { data } = await commentsService.get(masterId);
             if (data) {

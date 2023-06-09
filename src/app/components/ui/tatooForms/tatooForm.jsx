@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Places from "../../common/Form/radioGroupField/radioGroupField";
 
@@ -8,6 +8,12 @@ const TatooForm = ({ tatoo, onChange, value }) => {
             onChange(target.places);
         }
     };
+    useEffect(() => {
+        if (onChange && tatoo.place.length === 1) {
+            onChange(tatoo.place[0]);
+        }
+    });
+
     return (
         <div className="flex-1" >
             <div className="style pt-2">
@@ -21,7 +27,13 @@ const TatooForm = ({ tatoo, onChange, value }) => {
             </div>
             <div className="places border-top pt-2">
                 <p className="h1 py-2">Место нанесения</p>
-                <Places name="places" arr={tatoo.place} onChange={handleChange} value={value}/>
+                {tatoo.place.length > 1
+                    ? <Places name="places" arr={tatoo.place} onChange={handleChange} value={value}/>
+                    : <div className="d-flex">
+                        <p className="border rounded-3 p-2 px-3 text-semibold" style={{ width: "auto" }}>{tatoo.place[0]}</p>
+                    </div>
+
+                }
             </div>
         </div>
     );

@@ -55,7 +55,7 @@ const TatoosPage = ({ style, styles, tatoos }) => {
                         curentPage={page}
                     />
                 </div>
-                <div className="paginationNP">
+                <div className="paginationNP mb-5">
                     <PaginationNP
                         onPageDicrement= {handleDic}
                         onPageIncrement= {handleInc}

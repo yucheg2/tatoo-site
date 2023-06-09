@@ -17,7 +17,7 @@ const StorageCheckOut = ({ waiting, price, onSubmit, masters }) => {
         <div className="checkout-storage flex-auto ">
             <div className="checkout-content p-2 rounded-left-3 color-shadow-extra-large">
                 <SelectField
-                    label={"Выберите мастера"}
+                    label="Выберите мастера"
                     arr={mastersArr}
                     value={data.master}
                     onChange={handleChange}

@@ -5,7 +5,7 @@ import CommentsModal from "../commentsModal/commentsModal";
 import { useComents } from "../../../hooks/useComments";
 
 const MasterItem = ({ name, img, rate, description, favStyles, _id }) => {
-    const { comments, getComments } = useComents();
+    const { comments, getComments, loading } = useComents();
     const [show, setShow] = useState(false);
     const toggleShow = () => {
         setShow(p => !p);
@@ -35,7 +35,7 @@ const MasterItem = ({ name, img, rate, description, favStyles, _id }) => {
                     </div>
                 </div>
             </div>
-            <CommentsModal masterId={_id} comments={comments} show={show} onClose={toggleShow}/>
+            <CommentsModal loading={loading} masterId={_id} comments={comments} show={show} onClose={toggleShow}/>
 
         </div>
     );

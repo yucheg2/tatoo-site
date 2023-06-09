@@ -26,7 +26,7 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
         setData(data);
     };
     const handleSubmit = () => {
-        const obj = { _id: tatoo.src + data, place: data, src: tatoo.src };
+        const obj = { _id: tatoo.src + data + Date.now(), place: data, src: tatoo.src };
         const store = localStorage.getItem("store");
         if (store) {
             const newArr = JSON.parse(store);
