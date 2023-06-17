@@ -3,15 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 import LogRegLayout from "../../../layouts/logRegLayout";
 import Modal from "../../common/modal/modal";
 import routes from "../../../routes";
-import { useNavCount } from "../../../hooks/useNavCount";
 import DropDown from "./dropdown";
 import { useAuth } from "../../../hooks/useAuth";
 import "./index.css";
+import { useSelector } from "react-redux";
+import { getNavCountSelector } from "../../../store/count";
 
 const NavBar = () => {
     const [show, setShow] = useState(false);
     const { currentUser } = useAuth();
-    const { currentCount } = useNavCount();
+    const currentCount = useSelector(getNavCountSelector());
     const handleShow = () => {
         setShow(false);
     };

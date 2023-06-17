@@ -4,13 +4,14 @@ import PropTypes from "prop-types";
 import TatooForm1 from "../tatooForms/tatooForm";
 import Modal from "../../common/modal/modal";
 import LogRegLayout from "../../../layouts/logRegLayout";
-import { useNavCount } from "../../../hooks/useNavCount";
 import { useAuth } from "../../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { incrementNavCount } from "../../../store/count";
 
 const TatoosModal = ({ tatoo, onClose, show }) => {
+    const dispatch = useDispatch();
     const [data, setData] = useState("");
     const [status, setStatus] = useState(1);
-    const { handleInc } = useNavCount();
     const { currentUser } = useAuth();
 
     const handleClose = () => {
@@ -37,7 +38,7 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
             localStorage.setItem("store", JSON.stringify([obj]));
         }
         handleClose();
-        handleInc();
+        dispatch(incrementNavCount());
     };
     return (
         <Modal onClose={handleClose} show={show} >

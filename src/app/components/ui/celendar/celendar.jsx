@@ -39,8 +39,8 @@ const Celendar = ({ order }) => {
     const handleSendFeedback = async() => {
         const orderObject = ordersObj[selectedDate];
         await cancelOrder({ master: orderObject.master.id, date: orderObject.date }, "Отзыв отправлен.");
-        setSelectedDate(dates[0]);
         setFeedbackMode(false);
+        setSelectedDate(dates[0]);
     };
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const Celendar = ({ order }) => {
     return (
         <div className="celendar">
             <h1 className="text-center border-bottom mb-3">Календарь сеансов</h1>
-            {dates
+            {dates && dates.length > 0
                 ? <div className="d-flex">
                     <RadioGroupField showCircle={false} display="d-flex flex-column" arr={dates} name="dates" onChange={handleChange} value={selectedDate}/>
                     <div className="flex-auto border rounded-3 p-3">

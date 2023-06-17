@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useAuth } from "../../../hooks/useAuth";
-import { useNavCount } from "../../../hooks/useNavCount";
 import Modal from "../../common/modal/modal";
 import EditForm from "../editForm/editForm";
 import Celendar from "../celendar/celendar";
+import { useDispatch } from "react-redux";
+import { clearNavCount } from "../../../store/count";
 
 const DropDown = (data) => {
+    const dispatch = useDispatch();
     const { signOut } = useAuth();
-    const { clearCount } = useNavCount();
     const handleQuit = () => {
-        clearCount();
+        dispatch(clearNavCount());
         signOut();
     };
     const [open, setOpen] = useState(false);

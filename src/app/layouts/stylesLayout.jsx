@@ -1,14 +1,21 @@
 import React from "react";
 import StylesPage from "../pages/stylesPage/stylesPage";
-import { useParams } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 import TatoosPage from "../pages/tatooPage/tatoosPage";
-import { useTatoos } from "../hooks/useTatoo";
-import { useStyles } from "../hooks/useStyles";
+import { useSelector } from "react-redux";
+import { getTatoosSelector } from "../store/tatoo";
+import { getStylesSelector } from "../store/styles";
 
 const StylesLayout = () => {
-    const { tatoos } = useTatoos();
-    const { styles } = useStyles();
+    const tatoos = useSelector(getTatoosSelector());
+    const styles = useSelector(getStylesSelector());
     const { style } = useParams();
+
+    const styleExist = Object.values(styles).some(s => s.name === style);
+
+    if (!styleExist && style) {
+        return <Redirect to="/styles"/>;
+    }
     return (
         style
             ? <TatoosPage style={style} tatoos={tatoos} styles={styles}/>

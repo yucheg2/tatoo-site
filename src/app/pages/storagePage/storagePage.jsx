@@ -1,38 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import StorageList from "../../components/ui/storageList/storageList";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavCount } from "../../hooks/useNavCount";
-import { useTatoos } from "../../hooks/useTatoo";
 import { localStorageService } from "../../services/localstorage.service";
+import { clearNavCount, dicrementNavCount } from "../../store/count";
+import { getTatooInStorageSelector } from "../../store/tatoo";
 
 const StoragePage = () => {
+    const dispatch = useDispatch();
+
     const { currentUser } = useAuth();
-    const orderCount = useRef((currentUser && currentUser.order) ? Object.values(currentUser.order).length : 0);
+    const orderCount = useRef((currentUser?.order) ? Object.values(currentUser.order).length : 0);
 
-    const [items, setItems] = useState([]);
-    const { getTatoosBySrc } = useTatoos();
-    const { handleDicr } = useNavCount();
-    const { clearCount } = useNavCount();
-    const storage = localStorage.getItem("store");
+    const addedTatoos = useSelector(getTatooInStorageSelector());
 
-    useEffect(() => {
-        const addTatoos = storage && JSON.parse(storage).map((t) => {
-            const item = { ...getTatoosBySrc(t.src) };
-            item._id = t._id;
-            item.place = t.place;
-            return item;
-        });
-        setItems(addTatoos);
-    }, []);
+    const [items, setItems] = useState(addedTatoos);
+
     const handleDelete = (id) => {
         const filtred = items.filter((t) => t._id !== id);
         setItems(filtred);
-        handleDicr();
+        dispatch(dicrementNavCount());
         localStorage.setItem("store", JSON.stringify(filtred));
     };
 
     useEffect(() => {
-        const cuerrentLenght = currentUser && currentUser.order
+        const cuerrentLenght = currentUser?.order
             ? Object.values(currentUser.order).length
             : 0;
         if (!localStorageService.getUserId()) {
@@ -42,7 +34,7 @@ const StoragePage = () => {
         if (cuerrentLenght > orderCount.current) {
             localStorage.removeItem("store");
             setItems([]);
-            clearCount();
+            dispatch(clearNavCount());
             orderCount.current = cuerrentLenght;
         }
     }, [currentUser]);

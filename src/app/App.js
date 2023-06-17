@@ -1,9 +1,8 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import React from "react";
 import routes from "./routes";
 import { ToastContainer } from "react-toastify";
 import TatoosProvider from "./hooks/useTatoo";
-import StylesProvider from "./hooks/useStyles";
 import MainPageLayout from "./layouts/mainPageLayout";
 import "react-toastify/dist/ReactToastify.css";
 import AuthProvider from "./hooks/useAuth";
@@ -23,15 +22,14 @@ function App() {
         <BrowserRouter>
             <AuthProvider>
                 <MastersProvider>
-                    <StylesProvider>
-                        <TatoosProvider>
-                            <MainPageLayout>
-                                <Switch>
-                                    {getRoutes()}
-                                </Switch>
-                            </MainPageLayout>
-                        </TatoosProvider>
-                    </StylesProvider>
+                    <TatoosProvider>
+                        <MainPageLayout>
+                            <Switch>
+                                {getRoutes()}
+                                <Redirect to="/"/>
+                            </Switch>
+                        </MainPageLayout>
+                    </TatoosProvider>
                 </MastersProvider>
             </AuthProvider>
             <ToastContainer />
