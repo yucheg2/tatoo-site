@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const chalk = require("chalk")
 const config = require("config")
 const initDatabase = require("./startUp/initDataBase")
+const routes = require("./routes")
 
 const PORT = config.get("port")
 
@@ -11,6 +12,7 @@ const app = express()
 //1488228420
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use("/api", routes)
 
 async function start() {
     try {
