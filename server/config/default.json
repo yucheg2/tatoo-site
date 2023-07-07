@@ -1,4 +1,6 @@
 {
     "port": 8080,
-    "mongoUri": "mongodb+srv://prostoyurka1223:1488228420@cluster0.wcr7cow.mongodb.net/?retryWrites=true&w=majority"
+    "mongoUri": "mongodb+srv://prostoyurka1223:1488228420@cluster0.wcr7cow.mongodb.net/?retryWrites=true&w=majority",
+    "accessKey": "neWoruyKluchPJ",
+    "refreshKey": "kaznCheresMotumbu"
 }

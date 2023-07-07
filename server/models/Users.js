@@ -14,6 +14,10 @@ const schema = new Schema({
         required: true,
         unique: true
     },
+    password: {
+        type: String,
+        required: true
+    },
     order: Object
 })
 
