@@ -34,7 +34,7 @@ module.exports = async () => {
         await createInitialEntity(tatooseMock, Tatoos)
     }
 
-    const masters = await Tatoos.find()
+    const masters = await Masters.find()
 
     if (mastersMock.length < masters.length) {
         await createInitialEntity(mastersMock, Masters)

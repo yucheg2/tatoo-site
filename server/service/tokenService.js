@@ -33,9 +33,17 @@ class TokenService {
     }
 
     
-    validateTokens(refreshToken) {
+    validateRefresh(refreshToken) {
         try {
             return jwt.verify(refreshToken, config.get("refreshKey"))
+        } catch (e) {
+            return null
+        }
+    }
+
+    validateAccess(accessToken) {
+        try {
+            return jwt.verify(accessToken, config.get("accessKey"))
         } catch (e) {
             return null
         }

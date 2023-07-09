@@ -128,7 +128,7 @@ router.post("/signInWithPassword", [
 router.post("/token", async (req, res) => {
     const {refresh_token: refreshToken} = req.body
 
-    const data = await tokenService.validateTokens(refreshToken)
+    const data = await tokenService.validateRefresh(refreshToken)
     const dbToken = await tokenService.findInDB(refreshToken)
 
     if (!data || !dbToken || data._id !==dbToken?.user.toString()) {
