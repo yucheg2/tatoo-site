@@ -131,7 +131,7 @@ router.route("/:masterId/comments")
                 }
             })
 
-            res.send(master)
+            res.send(payload)
         } catch (error) {
             res.status(500).json({
                 message: "На сервере произошла ошибка :(",

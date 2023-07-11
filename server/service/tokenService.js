@@ -4,7 +4,7 @@ const Token = require("../models/Token")
 
 class TokenService {
     generate (payload) {
-        const accessToke = jwt.sign(
+        const accessToken = jwt.sign(
             payload,
             config.get("accessKey"),
             {
@@ -17,7 +17,7 @@ class TokenService {
             config.get("refreshKey")
         )
 
-        return { accessToke, refreshToken, expiresIn: 3600}
+        return { accessToken, refreshToken, expiresIn: 3600}
     }
 
     async save (userId, refreshToken) {

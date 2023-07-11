@@ -111,7 +111,7 @@ router.post("/signInWithPassword", [
                 })
             }
 
-            const tokens = tokenService.generate({_id: user._id})
+            const tokens = await tokenService.generate({_id: user._id})
 
             await tokenService.save(user._id, tokens.refreshToken)
 
@@ -137,9 +137,9 @@ router.post("/token", async (req, res) => {
         })
     }
 
-    const tokens = tokenService.generate({_id: dbToken.user})
+    const tokens = await tokenService.generate({_id: dbToken.user})
 
-    await tokenService.save(dbToken.user, refreshToken)
+    await tokenService.save(dbToken.user, tokens.refreshToken)
 
     res.status(200).send({...tokens, userId: dbToken.user})
 })

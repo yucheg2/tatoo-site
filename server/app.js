@@ -4,6 +4,7 @@ const chalk = require("chalk")
 const config = require("config")
 const initDatabase = require("./startUp/initDataBase")
 const routes = require("./routes")
+const cors = require("cors")
 
 const PORT = config.get("port")
 
@@ -12,6 +13,7 @@ const app = express()
 //1488228420
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(cors())
 app.use("/api", routes)
 
 async function start() {
