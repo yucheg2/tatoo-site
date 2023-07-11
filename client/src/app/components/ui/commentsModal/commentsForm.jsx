@@ -36,7 +36,6 @@ const CommentsForm = ({ masterId, onSubmit, onClose }) => {
                 }
             })
             .catch((error) => {
-                console.log(error);
                 toast.error(error.message);
             });
     };
