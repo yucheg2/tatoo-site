@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import placesService from "../services/placesService";
+import placesService from "../services/places.service";
 
 const placesSlice = createSlice({
     name: "places",
@@ -28,7 +28,7 @@ const { resived, requested, requestFaild } = actions;
 export const loadPlaces = () => async(dispatch) => {
     dispatch(requested());
     try {
-        const { data } = await placesService.get();
+        const data = await placesService.get();
         dispatch(resived(data));
     } catch (error) {
         dispatch(requestFaild(error.message));

@@ -47,7 +47,7 @@ export default StorageCheckOut;
 
 StorageCheckOut.propTypes = {
     waiting: PropTypes.bool,
-    masters: PropTypes.object,
+    masters: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     onSubmit: PropTypes.func,
     price: PropTypes.string
 };

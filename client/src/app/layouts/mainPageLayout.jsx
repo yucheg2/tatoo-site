@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import NavBar from "../components/ui/navigation/navBar";
 import PropTypes from "prop-types";
-import CommentsProvider from "../hooks/useComments";
 import { useDispatch, useSelector } from "react-redux";
 import { getTatoosIsloadingSelector, loadTatoos } from "../store/tatoo";
 import { getStylesIsloadingSelector, loadStyles } from "../store/styles";
@@ -29,7 +28,7 @@ const MainPageLayout = ({ children }) => {
     const stylesLoading = useSelector(getStylesIsloadingSelector());
     const mastersLoading = useSelector(getMasterLoadingStatusSelector());
     return (
-        <CommentsProvider>
+        <>
             <header className="mainPageLayout" >
                 <div data-color-mode="dark">
                     <NavBar />
@@ -48,7 +47,7 @@ const MainPageLayout = ({ children }) => {
                 ? children
                 : <h1 className="text-center"><span>загрузка</span><span className="AnimatedEllipsis"></span></h1>
             }
-        </CommentsProvider>
+        </>
     );
 };
 

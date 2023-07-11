@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import commentsService from "../services/commentsService";
+import commentsService from "../services/comments.service";
 import { toast } from "react-toastify";
 import userServuse from "../services/users.servise";
 

@@ -1,10 +1,10 @@
-import httpService from "./httpService";
+import httpService from "./http.service";
 
 const sizesService = {
     sizesEndPoint: "info/sizes/",
 
     get: async function() {
-        const data = await httpService.get(this.sizesEndPoint);
+        const { data } = await httpService.get(this.sizesEndPoint);
         return data;
     }
 };

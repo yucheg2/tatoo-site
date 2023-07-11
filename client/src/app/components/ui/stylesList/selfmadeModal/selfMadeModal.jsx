@@ -38,15 +38,15 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
         }
     };
 
-    const stylesArr = Object.keys(styles).map(s => ({
-        _id: s,
-        name: styles[s].name
+    const stylesArr = styles.map(s => ({
+        _id: s._id,
+        name: s.name
     }));
-    const sizesArr = sizes && Object.keys(sizes).map(size => ({
-        _id: size,
-        name: sizes[size].name
+    const sizesArr = sizes && sizes.map(size => ({
+        _id: size._id,
+        name: size.name
     }));
-    const placesArr = places && Object.values(places);
+    const placesArr = places && places.map(p => p.name);
 
     return (<Modal onClose={handleClose} show={show} >
         <div className="modal-body-content d-flex">
@@ -88,7 +88,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
 export default SelfMadeModal;
 
 SelfMadeModal.propTypes = {
-    styles: PropTypes.object,
+    styles: PropTypes.array,
     handleClose: PropTypes.func,
     show: PropTypes.bool
 };

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import mastersService from "../services/mastersService";
+import mastersService from "../services/masters.service";
 import userServuse from "../services/users.servise";
 import createErrorMessage from "../utils/createErrorMessage";
 import { loadCurrentUser } from "./users";
@@ -15,8 +15,8 @@ export const takeOrder = createAsyncThunk(
             person: toMaster ? currentUser : orderData.master
         });
         try {
-            Promise.all([mastersService.takeOrder(orderData.master, sendData(true)),
-                userServuse.takeOrder(currentUser._id, sendData(false))])
+            Promise.all([userServuse.takeOrder(currentUser._id, sendData(false)),
+                mastersService.takeOrder(orderData.master, sendData(true))])
                 .then((data) => {
                     const issue = data.find((res) => typeof (res) === "string");
                     if (issue) {
@@ -97,7 +97,8 @@ const mastersSlice = createSlice({
             })
             .addCase(updateRate.fulfilled, (state, action) => {
                 const { id, rate } = action.payload;
-                state.entities[id].rate = rate;
+                const master = state.entities.find(m => m._id === id);
+                master.rate = rate;
                 state.loading.updateRate = false;
             })
             .addCase(updateRate.rejected, (state, action) => {
@@ -118,7 +119,7 @@ const {
 export const loadMasters = () => async(dispatch) => {
     dispatch(requested());
     try {
-        const { data } = await mastersService.get();
+        const data = await mastersService.get();
         dispatch(resived(data));
     } catch (error) {
         dispatch(requestFaild(error.message));

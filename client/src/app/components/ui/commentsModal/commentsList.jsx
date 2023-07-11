@@ -9,7 +9,7 @@ const CommentsList = ({ comments }) => {
                 ? <p className="text-center lead">Отзывов нет</p>
                 : comments.map((c) => {
                     return (
-                        <CommentItem key={c.rate + c.name + c.com}{...c}/>
+                        <CommentItem key={c._id}{...c}/>
                     );
                 })}
         </div>);

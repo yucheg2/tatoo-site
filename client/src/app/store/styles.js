@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import stylesService from "../services/stylesService";
+import stylesService from "../services/styles.service";
 
 const stylesSlice = createSlice({
     name: "styles",
@@ -28,7 +28,7 @@ const { resived, requested, requestFaild } = actions;
 export const loadStyles = () => async(dispatch) => {
     dispatch(requested());
     try {
-        const { data } = await stylesService.get();
+        const data = await stylesService.get();
         dispatch(resived(data));
     } catch (error) {
         dispatch(requestFaild(error.message));

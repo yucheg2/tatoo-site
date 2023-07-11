@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import commentsService from "../services/commentsService";
+import commentsService from "../services/comments.service";
 import createErrorMessage from "../utils/createErrorMessage";
 import getNameById from "../utils/getUserName";
 

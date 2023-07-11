@@ -69,7 +69,7 @@ const TatoosPage = ({ style, styles, tatoos }) => {
 
 TatoosPage.propTypes = {
     style: PropTypes.string,
-    styles: PropTypes.object,
+    styles: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     tatoos: PropTypes.array
 };
 

@@ -3,12 +3,12 @@ const EXPIRES_KEY = "expires";
 const REFRESH_KEY = "jwt_refresh";
 const USERID_KEY = "user_local_id";
 
-export function setTokens({ localId, refreshToken, expiresIn = 3600, idToken }) {
+export function setTokens({ userId, refreshToken, expiresIn = 3600, accessToken }) {
     const expiresDate = new Date().getTime() + expiresIn * 1000;
-    localStorage.setItem(USERID_KEY, localId);
+    localStorage.setItem(USERID_KEY, userId);
     localStorage.setItem(REFRESH_KEY, refreshToken);
     localStorage.setItem(EXPIRES_KEY, expiresDate);
-    localStorage.setItem(ACCESSTOKEN_KEY, idToken);
+    localStorage.setItem(ACCESSTOKEN_KEY, accessToken);
 }
 
 export function getUserId() {

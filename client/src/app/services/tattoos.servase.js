@@ -1,10 +1,10 @@
-import httpService from "./httpService";
+import httpService from "./http.service";
 
 const tattoosService = {
     tatoosEndPoint: "info/tatoos/",
 
     get: async function() {
-        const data = await httpService.get(this.tatoosEndPoint);
+        const { data } = await httpService.get(this.tatoosEndPoint);
         return data;
     }
 };

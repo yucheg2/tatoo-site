@@ -1,4 +1,4 @@
-import httpService from "./httpService";
+import httpService from "./http.service";
 
 const usersEndPoint = "users/";
 
@@ -18,22 +18,14 @@ const userServuse = {
     takeOrder: async(id, orderData) => {
         const endPoint = usersEndPoint + `${id}/order/${orderData.date}`;
 
-        const existResponse = await httpService.get(endPoint);
-        if (existResponse.data) {
-            return "Вы уже записаны на этот день.";
-        }
-        const data = await httpService.put(endPoint, orderData);
+        const { data } = await httpService.put(endPoint, orderData);
         return data;
     },
     clearOrder: async function(id, date) {
         const endPoint = usersEndPoint + `${id}/order/${date}`;
 
-        const existResponse = await httpService.get(endPoint);
-
-        if (existResponse.data) {
-            const data = await httpService.delete(endPoint);
-            return data;
-        }
+        const data = await httpService.delete(endPoint);
+        return data;
     }
 };
 

@@ -8,30 +8,44 @@ axios.defaults.baseURL = configFile.initialEndPoint;
 
 axios.interceptors.request.use(
     async function(config) {
+        const expirecDate = localStorageService.getExpires();
+        const refreshToken = localStorageService.getRefreshToken();
         if (configFile.isFireBase) {
             const containSlash = /\/$/gi.test(config.url);
             config.url = (containSlash
                 ? config.url.slice(0, -1)
                 : config.url
             ) + ".json";
-        }
-        const expirecDate = localStorageService.getExpires();
-        const refreshToken = localStorageService.getRefreshToken();
-        if (refreshToken && Number(expirecDate) < Date.now()) {
-            const { data } = await httpAuth.post("token", {
-                grant_type: "refresh_token",
-                refresh_token: refreshToken
-            });
-            setTokens({
-                refreshToken: data.refresh_token,
-                idToken: data.id_token,
-                expiresIn: data.expires_in,
-                localId: data.user_id
-            });
+            if (refreshToken && Number(expirecDate) < Date.now()) {
+                const { data } = await httpAuth.post("token", {
+                    grant_type: "refresh_token",
+                    refresh_token: refreshToken
+                });
+                setTokens({
+                    refreshToken: data.refresh_token,
+                    idToken: data.id_token,
+                    expiresIn: data.expires_in,
+                    localId: data.user_id
+                });
+            }
+        } else {
+            if (refreshToken && Number(expirecDate) < Date.now()) {
+                const { data } = await httpAuth.post("token", {
+                    refresh_token: refreshToken
+                });
+                setTokens({
+                    refreshToken: data.refreshToken,
+                    idToken: data.accessToke,
+                    expiresIn: data.expiresIn,
+                    localId: data.userId
+                });
+            }
         }
         const accessToken = localStorageService.getAccessTokent();
-        if (accessToken) {
+        if (accessToken && configFile.isFireBase) {
             config.params = { ...config.params, auth: accessToken };
+        } else {
+            config.headers = { ...config.headers, Authorization: `Bearer ${accessToken}` };
         }
         return config;
     }

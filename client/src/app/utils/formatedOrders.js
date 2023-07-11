@@ -3,7 +3,7 @@ import formateDate from "./formateDate";
 const formateOrders = (orders, masters) => {
     const ordersObj = {};
     orders && Object.values(orders).forEach((ord) => {
-        const master = masters && masters[ord.person];
+        const master = masters && masters.find(m => m._id === ord.person);
         const formated = formateDate(ord.date);
         ordersObj[formated.str] = {
             date: ord.date,

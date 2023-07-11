@@ -23,7 +23,7 @@ const RegisterForm = ({ onSubmit }) => {
                 onSubmit && onSubmit();
                 toast.success("Вы зарегистрированы!");
             })
-            .catch(() => {
+            .catch((error) => {
                 setError(error);
             });
     };

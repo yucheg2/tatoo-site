@@ -17,7 +17,7 @@ const StylesList = ({ styles, tatoos }) => {
     };
     return (
         <div className="container-lg clearfix">
-            {Object.values(styles).map((style) => (
+            {styles.map((style) => (
                 <div
                     key={style.name}
                     className="col-4 float-left"
@@ -37,7 +37,7 @@ const StylesList = ({ styles, tatoos }) => {
 };
 
 StylesList.propTypes = {
-    styles: PropTypes.object,
+    styles: PropTypes.array,
     tatoos: PropTypes.array
 };
 

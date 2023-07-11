@@ -1,10 +1,10 @@
-import httpService from "./httpService";
+import httpService from "./http.service";
 
 const mastersService = {
     mastersEndPoint: "masters/",
 
     get: async function() {
-        const data = await httpService.get(this.mastersEndPoint);
+        const { data } = await httpService.get(this.mastersEndPoint);
         return data;
     },
     updateRate: async function(masterId, newRate) {
@@ -14,22 +14,14 @@ const mastersService = {
     takeOrder: async function(masterId, orderData) {
         const endPoint = this.mastersEndPoint + `${masterId}/order/${orderData.date}`;
 
-        const existResponse = await httpService.get(endPoint);
-        if (existResponse.data) {
-            return "Мастер в этот день зянят.";
-        }
-        const data = await httpService.put(endPoint, orderData);
+        const { data } = await httpService.put(endPoint, orderData);
         return data;
     },
     clearOrder: async function(masterId, date) {
         const endPoint = this.mastersEndPoint + `${masterId}/order/${date}`;
 
-        const existResponse = await httpService.get(endPoint);
-
-        if (existResponse.data) {
-            const data = await httpService.delete(endPoint);
-            return data;
-        }
+        const data = await httpService.delete(endPoint);
+        return data;
     }
 };
 

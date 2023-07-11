@@ -2,26 +2,28 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { localStorageService, setTokens } from "../services/localstorage.service";
-import mastersService from "../services/mastersService";
+import mastersService from "../services/masters.service";
 import userServuse from "../services/users.servise";
 import createErrorMessage from "../utils/createErrorMessage";
+import config from "../config.json";
 
 export const httpAuth = axios.create({
-    baseURL: "https://identitytoolkit.googleapis.com/v1/",
+    baseURL: config.isFireBase
+        ? "https://identitytoolkit.googleapis.com/v1/"
+        : config.initialEndPoint + "auth/",
     params: {
         key: process.env.REACT_APP_FIREBASE_KEY
     }
 });
-
 export const signIn = createAsyncThunk(
     "users/signin",
     async function(payload, { dispatch, rejectWithValue }) {
         dispatch(authRequested());
-        const url = "accounts:signInWithPassword";
+        const url = (config.isFireBase ? "accounts:" : "") + "signInWithPassword";
         try {
             const { data } = await httpAuth.post(url, { ...payload, returnSecureToken: true });
             setTokens(data);
-            const content = await userServuse.getById(data.localId);
+            const content = await userServuse.getById(data.userId);
             return content;
         } catch (error) {
             return rejectWithValue(createErrorMessage(error));
@@ -56,16 +58,22 @@ export const cancelOrder = createAsyncThunk(
 export const signUp = createAsyncThunk(
     "users/signUp",
     async function({ email, password, ...rest }, { rejectWithValue }) {
-        const url = "accounts:signUp";
+        const url = (config.isFireBase ? "accounts:" : "") + "signUp";
         try {
-            const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
+            if (config.isFireBase) {
+                const { data } = await httpAuth.post(url, { email, password, returnSecureToken: true });
+                setTokens(data);
+                const content = await userServuse.create({
+                    _id: data.userId,
+                    email,
+                    ...rest
+                });
+                return content;
+            }
+            const { data } = await httpAuth.post(url, { email, password, ...rest });
             setTokens(data);
-            const content = await userServuse.create({
-                _id: data.localId,
-                email,
-                ...rest
-            });
-            return content;
+            const user = await userServuse.getById(data.userId);
+            return user;
         } catch (error) {
             return rejectWithValue(createErrorMessage(error));
         }

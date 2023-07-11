@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import sizesService from "../services/sizesService";
+import sizesService from "../services/sizes.service";
 
 const sizesSlice = createSlice({
     name: "sizes",
@@ -28,7 +28,7 @@ const { resived, requested, requestFaild } = actions;
 export const loadSizes = () => async(dispatch) => {
     dispatch(requested());
     try {
-        const { data } = await sizesService.get();
+        const data = await sizesService.get();
         dispatch(resived(data));
     } catch (error) {
         dispatch(requestFaild(error.message));

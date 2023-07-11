@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserSelector } from "../../../store/users";
 import { updateRate } from "../../../store/masters";
 import { addComment } from "../../../store/comments";
+import { nanoid } from "@reduxjs/toolkit";
 
 const CommentsForm = ({ masterId, onSubmit, onClose }) => {
     const dispatch = useDispatch();
@@ -21,7 +22,8 @@ const CommentsForm = ({ masterId, onSubmit, onClose }) => {
         const send = {
             ...data,
             rate: arr.findIndex((el) => el === data.rate) + 1,
-            name: currentUser._id
+            name: currentUser._id,
+            _id: nanoid()
         };
         Promise.all([
             dispatch(addComment({ masterId, send })).unwrap(),
@@ -34,6 +36,7 @@ const CommentsForm = ({ masterId, onSubmit, onClose }) => {
                 }
             })
             .catch((error) => {
+                console.log(error);
                 toast.error(error.message);
             });
     };

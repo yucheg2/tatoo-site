@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import tattoosService from "../services/tattoosServase";
+import tattoosService from "../services/tattoos.servase";
 
 const tatoosSlice = createSlice({
     name: "tatoos",
@@ -29,7 +29,7 @@ const { resived, requested, requestFaild } = actions;
 export const loadTatoos = () => async(dispatch) => {
     dispatch(requested());
     try {
-        const { data } = await tattoosService.get();
+        const data = await tattoosService.get();
         dispatch(resived(data));
     } catch (error) {
         dispatch(requestFaild(error.message));
