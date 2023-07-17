@@ -34,7 +34,6 @@ const SelfMadeForm = ({ styles, sizes, places, sizeDescription, valueObj, handle
             <div className="places border-top pt-2">
                 <p className="h1 py-2">Место нанесения</p>
                 <RadioGroupField name="place" arr={places} onChange={handleChange} value={valueObj.place}/>
-
             </div>
         </div>
     );

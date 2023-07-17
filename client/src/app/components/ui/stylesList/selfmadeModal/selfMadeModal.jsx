@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import useForm from "../../../../hooks/useForm";
 import SelfMadeForm from "./selfMadeForm";
 import PhotoFiedl from "../../../common/Form/photoField/photoField";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getSizesIsloadingSelector, getSizesSelector } from "../../../../store/sizes";
 import { getPlacesIsloadingSelector, getPlacesSelector } from "../../../../store/places";
@@ -15,27 +14,27 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     const currentUser = useSelector(getCurrentUserSelector());
 
     const sizes = useSelector(getSizesSelector());
+    const sizesObj = sizes.reduce((acc, el) => {
+        acc[el._id] = el;
+        return acc;
+    }, {});
     const sizesLoading = useSelector(getSizesIsloadingSelector());
 
     const places = useSelector(getPlacesSelector());
     const placesLoading = useSelector(getPlacesIsloadingSelector());
+
     const { data, handleChange } = useForm({ img: "", style: "", size: "", place: "" });
     const [status, setStatus] = useState(1);
 
-    const sizeDescription = sizes && sizes[data.size]?.size;
+    const fileSelectedHandler = (fileName) => {
+        handleChange({ img: fileName });
+    };
+
+    const sizeDescription = sizesObj && sizesObj[data.size]?.size;
     const disabledStatus = Object.values(data).every((d) => d !== "");
 
     const handlNext = () => {
         setStatus(p => !p);
-    };
-    const fileSelectedHandler = ({ target }) => {
-        const { type, name } = target.files[0];
-
-        if (type.includes("image")) {
-            handleChange({ img: name });
-        } else {
-            toast.error("Вставте фотографию");
-        }
     };
 
     const stylesArr = styles.map(s => ({
@@ -53,8 +52,8 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
             {(!sizesLoading && styles && !placesLoading)
                 ? status === 1
                     ? <div className="first-page d-flex">
-                        <div>
-                            <PhotoFiedl onChange={fileSelectedHandler}/>
+                        <div className="d-flex mr-2">
+                            <PhotoFiedl onChange={fileSelectedHandler} img={data.img}/>
                         </div>
                         <div className="d-flex flex-column">
                             <SelfMadeForm

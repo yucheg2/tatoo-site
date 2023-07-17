@@ -23,9 +23,9 @@ axios.interceptors.request.use(
                 });
                 setTokens({
                     refreshToken: data.refresh_token,
-                    idToken: data.id_token,
+                    accessToken: data.id_token,
                     expiresIn: data.expires_in,
-                    localId: data.user_id
+                    userId: data.user_id
                 });
             }
         } else {
@@ -35,9 +35,9 @@ axios.interceptors.request.use(
                 });
                 setTokens({
                     refreshToken: data.refreshToken,
-                    idToken: data.accessToke,
+                    accessToken: data.accessToken,
                     expiresIn: data.expiresIn,
-                    localId: data.userId
+                    userId: data.userId
                 });
             }
         }

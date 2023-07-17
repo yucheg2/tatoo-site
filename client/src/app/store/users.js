@@ -192,7 +192,7 @@ export const edit = (newData, emailChanged) => async(dispatch, getState) => {
     const accessToken = localStorageService.getAccessTokent();
     dispatch(editRequested());
     try {
-        if (emailChanged) {
+        if (emailChanged && config.isFireBase) {
             const { data } = await httpAuth.post(url, { idToken: accessToken, email: payload.email, returnSecureToken: true });
             setTokens(data);
         }

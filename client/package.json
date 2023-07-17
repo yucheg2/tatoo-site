@@ -2,6 +2,7 @@
     "name": "tatoo-site",
     "version": "0.1.0",
     "private": true,
+    "proxy": "http://localhost:8080/",
     "dependencies": {
         "@primer/css": "^20.8.2",
         "@reduxjs/toolkit": "^1.9.5",

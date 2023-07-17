@@ -1,6 +1,5 @@
 const tokenService = require("../service/tokenService")
 
-
 module.exports = async (req,res, next) => {
     if(req.method === "OPTIONS") {
         next()

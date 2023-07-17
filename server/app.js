@@ -1,4 +1,5 @@
 const express = require("express")
+const path = require("path")
 const mongoose = require("mongoose")
 const chalk = require("chalk")
 const config = require("config")
@@ -12,6 +13,7 @@ const app = express()
 //prostoyurka1223
 //1488228420
 app.use(express.json())
+app.use("/sketches", express.static(path.join(__dirname, "sketches")))
 app.use(express.urlencoded({extended: false}))
 app.use(cors())
 app.use("/api", routes)
