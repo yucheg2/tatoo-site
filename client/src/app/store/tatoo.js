@@ -48,6 +48,9 @@ export const getTatooInStorageSelector = () => (state) => {
     const tatoos = state.tatoos.entities;
 
     const addTatoos = storage && !isLoading && JSON.parse(storage).map((t) => {
+        if (t.isSelfMade) {
+            return { ...t };
+        }
         const item = { ...tatoos.find((tatoo) => tatoo.src === t.src) };
         item._id = t._id;
         item.place = t.place;

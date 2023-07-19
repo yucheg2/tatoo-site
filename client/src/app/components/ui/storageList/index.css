@@ -11,6 +11,12 @@
     border-width: 4px;
 }
 
+.container-srorage-selfmade {
+    max-width: 800px;
+    border: solid #603dc0;
+    border-width: 4px;
+}
+
 .checkout-content{
     width: auto;
     position: sticky ;

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StorageList from "../../components/ui/storageList/storageList";
 import { localStorageService } from "../../services/localstorage.service";
+import selfMadeService from "../../services/selfMade.service";
 import { clearNavCount, dicrementNavCount } from "../../store/count";
 import { getTatooInStorageSelector } from "../../store/tatoo";
 import { getCurrentUserSelector } from "../../store/users";
@@ -17,7 +18,13 @@ const StoragePage = () => {
     const [items, setItems] = useState(addedTatoos);
 
     const handleDelete = (id) => {
-        const filtred = items.filter((t) => t._id !== id);
+        const filtred = items.filter((t) => {
+            if (t.isSelfMade && t._id === id) {
+                const arr = t.src.split("\\");
+                selfMadeService.removeFromStore(arr[arr.length - 1]);
+            }
+            return t._id !== id;
+        });
         setItems(filtred);
         dispatch(dicrementNavCount());
         localStorage.setItem("store", JSON.stringify(filtred));

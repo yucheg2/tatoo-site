@@ -6,6 +6,7 @@ import mastersService from "../services/masters.service";
 import userServuse from "../services/users.servise";
 import createErrorMessage from "../utils/createErrorMessage";
 import config from "../config.json";
+import selfMadeService from "../services/selfMade.service";
 
 export const httpAuth = axios.create({
     baseURL: config.isFireBase
@@ -204,7 +205,12 @@ export const edit = (newData, emailChanged) => async(dispatch, getState) => {
     }
 };
 
-export const signOut = () => (dispatch) => {
+export const signOut = () => async(dispatch, getState) => {
+    try {
+        await selfMadeService.removeTemporery(getState().users.currentUser._id);
+    } catch (error) {
+        dispatch(editRequestFaild(createErrorMessage(error)));
+    }
     localStorageService.deleteTokens();
     localStorage.removeItem("store");
     dispatch(userQuited());

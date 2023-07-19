@@ -1,27 +1,28 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import imgService from "../../../../services/img.service";
+import imgService from "../../../../services/selfMade.service";
 import "./index.css";
 
-const PhotoFiedl = ({ img, onChange }) => {
+const PhotoFiedl = ({ img, onChange, currentUser }) => {
     const [imgFile, setImgFile] = useState(null);
 
     useEffect(() => {
-        if (imgFile) {
-            try {
-                const data = new FormData();
-                data.append("sketch", imgFile);
+        try {
+            const data = new FormData();
+            data.append("sketch", imgFile);
 
-                imgService.upload(data)
-                    .then(res => onChange(res.path));
-            } catch (error) {
-                toast.error(error.message);
-            }
+            imgService.upload(data)
+                .then(res => onChange(res.path));
+        } catch (error) {
+            toast.error(error.message);
         }
     }, [imgFile]);
 
     const handleChange = (file) => {
+        if (!currentUser) {
+            return toast.error("Вы не авторизованы");
+        }
         if (file?.type.includes("image")) {
             setImgFile(file);
         } else {
@@ -48,6 +49,7 @@ const PhotoFiedl = ({ img, onChange }) => {
 export default PhotoFiedl;
 
 PhotoFiedl.propTypes = {
+    currentUser: PropTypes.object,
     img: PropTypes.string,
     onChange: PropTypes.func
 };
