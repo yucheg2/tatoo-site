@@ -37,7 +37,7 @@ const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedb
                                 title="Подробнее"
                                 onClick={() => { onOrder(order); }}
                                 id={i}
-                                src={"/" + order.src}
+                                src={order.src}
                                 alt="order"
                                 style={{
                                     minWidth: "300px"

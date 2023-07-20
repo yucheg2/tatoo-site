@@ -55,6 +55,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
             const src = await selfMadeService.loadToStorage(currentUser._id);
             const sendData = {
                 src,
+                style: styles.find((el) => el._id === data.style).name,
                 _id: data.src + data.place + Date.now(),
                 place: data.place,
                 size: sizes.find((el) => el._id === data.size),

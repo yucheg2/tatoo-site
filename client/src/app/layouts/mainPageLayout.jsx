@@ -8,6 +8,9 @@ import { loadSizes } from "../store/sizes";
 import { loadPlaces } from "../store/places";
 import { getMasterLoadingStatusSelector, loadMasters } from "../store/masters";
 import { loadCurrentUser } from "../store/users";
+import selfMadeService from "../services/selfMade.service";
+import { localStorageService } from "../services/localstorage.service";
+import { toast } from "react-toastify";
 
 const MainPageLayout = ({ children }) => {
     const handleClick = () => {
@@ -16,7 +19,15 @@ const MainPageLayout = ({ children }) => {
 
     const dispatch = useDispatch();
 
+    const storeLength = localStorage.getItem("store") && JSON.parse(localStorage.getItem("store")).length > 0;
     useEffect(() => {
+        if (!storeLength && localStorageService.getUserId()) {
+            selfMadeService.removeStore().catch((e) => {
+                if (e?.response?.data?.error?.code >= 500) {
+                    toast.error("Unexepted error");
+                }
+            });
+        }
         dispatch(loadCurrentUser());
         dispatch(loadTatoos());
         dispatch(loadStyles());

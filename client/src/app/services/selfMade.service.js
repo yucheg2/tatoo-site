@@ -39,6 +39,31 @@ class SelfMadeService {
 
         return data;
     }
+
+    async removeStore() {
+        const { data } = await httpService.delete(
+            this.#endPoint + "storage/" + localStorageService.getUserId()
+        );
+
+        return data;
+    }
+
+    async loadToOrder(fileName) {
+        const { data } = await httpService.post(
+            this.#endPoint + "order/" + localStorageService.getUserId(),
+            { fileName }
+        );
+
+        return data;
+    }
+
+    async removeOrder() {
+        const { data } = await httpService.delete(
+            this.#endPoint + "order/" + localStorageService.getUserId()
+        );
+
+        return data;
+    }
 }
 
 export default new SelfMadeService();

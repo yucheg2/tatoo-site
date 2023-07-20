@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cancelOrder } from "../../../store/users";
 import formateDate from "../../../utils/formateDate";
 import { getMastersListSelectors } from "../../../store/masters";
+import selfMadeService from "../../../services/selfMade.service";
 
 const Celendar = ({ order }) => {
     const dispatch = useDispatch();
@@ -34,9 +35,13 @@ const Celendar = ({ order }) => {
 
     const handleCancel = async(data) => {
         const firstCancel = formateDate(data.date).str === dates[0];
+
         dispatch(cancelOrder({ orderData: data, txt: "Заказ отменен!" }))
             .unwrap()
             .then(() => {
+                if (ordersObj[selectedDate].orders.some(t => t.isSelfMade)) {
+                    selfMadeService.removeOrder();
+                }
                 if (firstCancel) {
                     setSelectedDate(dates[1]);
                 } else { setSelectedDate(dates[0]); }

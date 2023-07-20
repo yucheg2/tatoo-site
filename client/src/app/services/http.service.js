@@ -44,9 +44,10 @@ axios.interceptors.request.use(
         const accessToken = localStorageService.getAccessTokent();
         if (accessToken && configFile.isFireBase) {
             config.params = { ...config.params, auth: accessToken };
-        } else {
+        } else if (accessToken) {
             config.headers = { ...config.headers, Authorization: `Bearer ${accessToken}` };
         }
+
         return config;
     }
     ,

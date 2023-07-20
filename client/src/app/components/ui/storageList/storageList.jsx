@@ -19,8 +19,7 @@ const StorageList = ({ arr, handleDelete }) => {
     }, 0) + " руб.";
 
     const handleSubmit = async(data) => {
-        dispatch(takeOrder({ tatoos: arr, orderData: data }))
-            .unwrap();
+        dispatch(takeOrder({ tatoos: arr, orderData: data }));
     };
     return (
         <div className="d-flex">

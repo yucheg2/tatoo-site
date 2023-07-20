@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import mastersService from "../services/masters.service";
+import selfMadeService from "../services/selfMade.service";
 import userServuse from "../services/users.servise";
 import createErrorMessage from "../utils/createErrorMessage";
 import { loadCurrentUser } from "./users";
@@ -9,9 +10,22 @@ export const takeOrder = createAsyncThunk(
     "masters/takeOrder",
     async function({ tatoos, orderData }, { rejectWithValue, getState, dispatch }) {
         const { currentUser } = getState().users;
+
+        const order = [];
+        await Promise.all(
+            tatoos.map(async(t) => {
+                if (t.isSelfMade) {
+                    const arr = t.src.split("\\");
+                    const newSrc = await selfMadeService.loadToOrder(arr[arr.length - 1]);
+                    t.src = newSrc;
+                }
+                order.push(t);
+            })
+        );
+
         const sendData = (toMaster) => ({
             date: orderData.date,
-            order: JSON.stringify(tatoos),
+            order: JSON.stringify(order),
             person: toMaster ? currentUser : orderData.master
         });
         try {

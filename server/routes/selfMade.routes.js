@@ -64,7 +64,7 @@ router.route("/storage/:userId")
                     res.send(`sketches\\${userId}\\store\\${newImgName}`)
                 })
             } 
-            res.status(400).json({
+            res.json({
                 error: {
                     message: "Файл не найден",
                     code: 400
@@ -101,8 +101,83 @@ router.route("/storage/:userId")
             })
         }
     })
+    .delete((req,res) => {
+        try {
+            const {userId} = req.params
 
-router.delete("storage/:userId/:fileName",authMiddleware, (req,res) => {
+            const storePath = path.join(__dirname, "..", "sketches", userId, "store")
+            if (fs.existsSync(storePath)) {
+                fs.rmSync(storePath, { recursive: true, force: true })
+                return res.send(null)
+            } 
+            res.status(400).json({
+                error: {
+                    message: "Файл не найден",
+                    code: 400
+                }
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: "На сервере произошла ошибка :(",
+                error
+            })
+        }
+    })
 
-})
+router.route("/order/:userId")
+    .post(async (req,res)=> {
+
+        try {
+
+            const {userId} = req.params
+            const {fileName} = req.body
+        
+            const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
+            const orderPath = path.join(__dirname, "..", "sketches", userId, "order")
+            if (fs.existsSync(storePath)) {
+                if (!fs.existsSync(orderPath)) {
+                    fs.mkdirSync(orderPath)
+                }
+                const oldPath = path.join(storePath, fileName)
+                const newPath = path.join(orderPath, fileName)
+                return fs.rename(oldPath, newPath, function (err) {
+                    if (err) throw err
+                    res.send(`sketches\\${userId}\\order\\${fileName}`)
+                })
+            } 
+            res.json({
+                error: {
+                    message: "Файл не найден",
+                    code: 400
+                }
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: "На сервере произошла ошибка :(",
+                error
+            })
+        }
+    })
+    .delete((req,res) => {
+        try {
+            const {userId} = req.params
+
+            const orderPath = path.join(__dirname, "..", "sketches", userId, "order")
+            if (fs.existsSync(orderPath)) {
+                fs.rmSync(orderPath, { recursive: true, force: true })
+                return res.send(null)
+            } 
+            res.status(400).json({
+                error: {
+                    message: "Файл не найден",
+                    code: 400
+                }
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: "На сервере произошла ошибка :(",
+                error
+            })
+        }
+    })
 module.exports = router
