@@ -19,6 +19,13 @@ const schema = new Schema({
     rate: {
         type: Number,
         required: true
+    },
+    email: {
+        type: String,
+        unique: true
+    },
+    password: {
+        type: String,
     }
 })
 

@@ -17,7 +17,20 @@ router.get("/", async (req, res) => {
     }
 })
 
-router
+router.route("/:masterId")
+    .get( async (req, res) => {
+        try {
+            const {masterId} = req.params
+
+            const user = await Masters.findById(masterId)
+    
+            res.send(user)
+        } catch (error) {
+            res.status(500).json({
+                message: "На сервере произошла ошибка :("
+            })
+        }
+    })
 
 router.route("/:masterId/order/:date")
     .delete( auth, async(req, res) => {

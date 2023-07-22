@@ -3,6 +3,7 @@ const {check, validationResult} = require("express-validator")
 const Users = require("../models/Users")
 const bcrypt = require("bcryptjs")
 const tokenService = require("../service/tokenService")
+const Masters = require("../models/Masters")
 
 
 const router = express.Router({
@@ -87,9 +88,9 @@ router.post("/signInWithPassword", [
                 })
             }
 
-            const {email, password} = req.body 
+            const {email, password, isMaster} = req.body 
 
-            const user = await Users.findOne({email})
+            const user = isMaster ? await Masters.findOne({email}) : await Users.findOne({email}) 
 
             if (!user) {
                 return res.status(400).send({
@@ -130,6 +131,7 @@ router.post("/token", async (req, res) => {
 
     const data = await tokenService.validateRefresh(refreshToken)
     const dbToken = await tokenService.findInDB(refreshToken)
+    console.log(data, dbToken)
 
     if (!data || !dbToken || data._id !==dbToken?.user.toString()) {
         return res.status(401).json({
