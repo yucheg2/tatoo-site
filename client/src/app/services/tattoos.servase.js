@@ -6,6 +6,10 @@ const tattoosService = {
     get: async function() {
         const { data } = await httpService.get(this.tatoosEndPoint);
         return data;
+    },
+    create: async function(payload) {
+        const { data } = await httpService.post(this.tatoosEndPoint, payload);
+        return data;
     }
 };
 

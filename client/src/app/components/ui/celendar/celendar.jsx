@@ -63,6 +63,9 @@ const Celendar = ({ order }) => {
         }))
             .unwrap()
             .then(() => {
+                if (ordersObj[selectedDate].orders.some(t => t.isSelfMade)) {
+                    selfMadeService.removeOrder();
+                }
                 if (firstCancel) {
                     setSelectedDate(dates[1]);
                 } else {

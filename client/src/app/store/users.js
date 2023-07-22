@@ -24,7 +24,10 @@ export const signIn = createAsyncThunk(
         try {
             const { data } = await httpAuth.post(url, { ...payload, returnSecureToken: true });
             setTokens(data);
-            const content = await userServuse.getById(data.userId);
+            const content = payload.isMaster ? await mastersService.getById(data.userId) : await userServuse.getById(data.userId);
+            if (payload.isMaster) {
+                localStorage.setItem("isMaster", true);
+            }
             return content;
         } catch (error) {
             return rejectWithValue(createErrorMessage(error));
@@ -212,6 +215,7 @@ export const signOut = () => async(dispatch, getState) => {
         dispatch(editRequestFaild(createErrorMessage(error)));
     }
     localStorageService.deleteTokens();
+    localStorage.removeItem("isMaster");
     localStorage.removeItem("store");
     dispatch(userQuited());
 };
@@ -221,7 +225,9 @@ export const loadCurrentUser = () => async(dispatch) => {
     if (id) {
         dispatch(authRequested());
         try {
-            const user = await userServuse.getById(id);
+            const user = localStorage.getItem("isMaster")
+                ? await mastersService.getById(id)
+                : await userServuse.getById(id);
             dispatch(authRequestSuccess(user));
         } catch (error) {
             dispatch(authRequestFaild(createErrorMessage(error)));

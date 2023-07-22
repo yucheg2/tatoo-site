@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { signIn } from "../../../store/users";
+import Checkbox from "../../common/Form/checkbox/checkbox";
 
-const LoginForm = ({ onSubmit, initialState = { password: "", email: "" }, errors = {} }) => {
+const LoginForm = ({ onSubmit, initialState = { password: "", email: "", isMaster: false }, errors = {} }) => {
     const dispatch = useDispatch();
 
     const { data, handleChange } = useForm(initialState);
@@ -47,6 +48,12 @@ const LoginForm = ({ onSubmit, initialState = { password: "", email: "" }, error
                         placeHolder="Введите ваш пароль"
                         type="password"
                         error={error.password}
+                    />
+                    <Checkbox
+                        label="Мастер"
+                        name="isMaster"
+                        onChange={handleChange}
+                        value={data.isMaster}
                     />
                 </div>
                 <button disabled={isBlock} className="btn btn-primary btn-block mb-3 h3 p-2">

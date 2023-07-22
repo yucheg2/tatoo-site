@@ -1,0 +1,32 @@
+.cardContainer {
+    height: 400px;
+    cursor: pointer;
+    position: relative;
+}
+
+.cardImg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardContent{
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    width: 0;
+    height: 100%;
+    background: rgb(252, 143, 0);
+    text-align: center;
+    transition: 0.4s;
+    padding-top: 55%;
+}
+
+.cardContent p {
+    opacity: 0;
+    transition: 0.30s;
+}

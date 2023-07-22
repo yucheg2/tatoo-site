@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import StyleCard from "../styleCard/styleCard";
 import SelfMadeModal from "./selfmadeModal/selfMadeModal";
+import { useSelector } from "react-redux";
+import { getCurrentUserSelector } from "../../../store/users";
 
 const StylesList = ({ styles, tatoos }) => {
     const [showModal, setShowModal] = useState(false);
+    const currentUser = useSelector(getCurrentUserSelector());
 
     const handleToggleModal = () => {
         setShowModal((p) => !p);
@@ -30,7 +33,9 @@ const StylesList = ({ styles, tatoos }) => {
                     />
                 </div>
             ))}
-            <button onClick={handleToggleModal} className="btn btn-block h2 p-4 border-top-0 rouded-top-0">Создать свою</button>
+            <button onClick={handleToggleModal} className="btn btn-block h2 p-4 border-top-0 rouded-top-0">
+                {currentUser?.rate ? "Добавить эскиз" : "Создать свою"}
+            </button>
             <SelfMadeModal styles={styles} handleClose={handleToggleModal} show={showModal}/>
         </div>
     );

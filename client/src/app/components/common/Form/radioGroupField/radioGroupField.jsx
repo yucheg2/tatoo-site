@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onChange, value }) => {
     const handleChange = ({ target }) => {
-        onChange({ [name]: target.value });
+        onChange({ [name]: typeof value === "string" ? target.value : [...value, target.value] });
     };
     useEffect(() => {
         arr.length === 1 && onChange({ [name]: arr[0] });
@@ -24,7 +24,7 @@ const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onC
                                     type="radio"
                                     value={el}
                                     name={el}
-                                    checked= {value === el}
+                                    checked= { typeof value === "string" ? value === el : value.some((item) => item === el)}
                                     style={!showCircle
                                         ? {
                                             display: "none",
@@ -55,6 +55,6 @@ RadioGroupField.propTypes = {
     arr: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.string
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
 };
 export default RadioGroupField;

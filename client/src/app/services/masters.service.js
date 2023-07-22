@@ -7,8 +7,12 @@ const mastersService = {
         const { data } = await httpService.get(this.mastersEndPoint);
         return data;
     },
+    getById: async function(masterId) {
+        const { data } = await httpService.get(this.mastersEndPoint + masterId);
+        return data;
+    },
     updateRate: async function(masterId, newRate) {
-        const data = await httpService.put(this.mastersEndPoint + `${masterId}/rate`, newRate);
+        const { data } = await httpService.put(this.mastersEndPoint + `${masterId}/rate`, newRate);
         return data;
     },
     takeOrder: async function(masterId, orderData) {
@@ -20,7 +24,7 @@ const mastersService = {
     clearOrder: async function(masterId, date) {
         const endPoint = this.mastersEndPoint + `${masterId}/order/${date}`;
 
-        const data = await httpService.delete(endPoint);
+        const { data } = await httpService.delete(endPoint);
         return data;
     }
 };

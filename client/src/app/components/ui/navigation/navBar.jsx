@@ -33,7 +33,7 @@ const NavBar = () => {
                 <div className="UnderlineNav-body ">
                     {
                         routes.map((rout) => {
-                            if (!((rout.protected && !currentUser) || (rout.display === false))) {
+                            if (!((rout.protected && !currentUser) || (rout.name === "Заказы" && currentUser.rate) || (rout.display === false))) {
                                 return (
                                     <Link
                                         key={rout.path}

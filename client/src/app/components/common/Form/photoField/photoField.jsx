@@ -8,14 +8,16 @@ const PhotoFiedl = ({ img, onChange, currentUser }) => {
     const [imgFile, setImgFile] = useState(null);
 
     useEffect(() => {
-        try {
-            const data = new FormData();
-            data.append("sketch", imgFile);
+        if (imgFile && currentUser) {
+            try {
+                const data = new FormData();
+                data.append("sketch", imgFile);
 
-            imgService.upload(data)
-                .then(res => onChange(res.path));
-        } catch (error) {
-            toast.error(error.message);
+                imgService.upload(data)
+                    .then(res => onChange(res.path));
+            } catch (error) {
+                toast.error(error.message);
+            }
         }
     }, [imgFile]);
 
