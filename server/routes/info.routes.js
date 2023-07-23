@@ -61,12 +61,38 @@ router.route("/tatoos")
                 }
             })
         } catch (e) {
-            console.log(e)
             res.status(500).json({
                 message: "На сервере произошла ошибка :("
             })
         }
     })
+
+router.delete("/tatoos/:tatooId/:style/:fileName", authMiddleware, async (req,res) => {
+    try {
+        const masterId = req.user._id
+        const {tatooId, style, fileName} = req.params
+
+        const master = await Masters.findById(masterId)
+        if (!master) {
+            return res.status(401).json({
+                message: "Unauthorized" 
+            })
+        }
+
+        const filePath = path.join(__dirname, "..", "sketches", style, fileName)
+            
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath)
+        }
+
+        await Tatoos.deleteOne({_id: tatooId})
+        res.send(null)
+    } catch (error) {
+        res.status(500).json({
+            message: "На сервере произошла ошибка :("
+        })
+    }
+})
 
 router.get("/sizes",async (req, res) => {
     try {

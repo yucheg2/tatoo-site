@@ -10,9 +10,9 @@ import { getSizesIsloadingSelector, getSizesSelector } from "../../../../store/s
 import { getPlacesIsloadingSelector, getPlacesSelector } from "../../../../store/places";
 import { getCurrentUserSelector } from "../../../../store/users";
 import { toast } from "react-toastify";
-import selfMadeService from "../../../../services/selfMade.service";
 import { incrementNavCount } from "../../../../store/count";
-import tattoosService from "../../../../services/tattoos.servase";
+// import tattoosService from "../../../../services/tattoos.servase";
+import { createNewTatoo, upload } from "../../../../store/tatoo";
 
 const SelfMadeModal = ({ handleClose, show, styles }) => {
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     const places = useSelector(getPlacesSelector());
     const placesLoading = useSelector(getPlacesIsloadingSelector());
 
-    const { data, handleChange, setInitial } = useForm({ src: "", style: "", size: "", place: currentUser.rate ? [] : "" });
+    const { data, handleChange, setInitial } = useForm({ src: "", style: "", size: "", place: currentUser?.rate ? [] : "" });
     const [status, setStatus] = useState(1);
 
     useEffect(() => {
@@ -50,38 +50,17 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     };
 
     const handleSubmit = async() => {
-        const store = localStorage.getItem("store");
-
         try {
             if (localStorage.getItem("isMaster")) {
-                const sendData = {
-                    ...data,
-                    size: sizes.find((s) => s._id === data.size),
-                    style: styles.find((el) => el._id === data.style).name
-                };
-                const newTatoo = await tattoosService.create(sendData);
-                console.log(newTatoo);
+                dispatch(createNewTatoo(sizes, styles, data));
             } else {
-                const src = await selfMadeService.loadToStorage(currentUser._id);
-                const sendData = {
-                    src,
-                    style: styles.find((el) => el._id === data.style).name,
-                    _id: data.src + data.place + Date.now(),
-                    place: data.place,
-                    size: sizes.find((el) => el._id === data.size),
-                    isSelfMade: true
-                };
-                if (store) {
-                    const newArr = JSON.parse(store);
-                    if (!newArr.some((item) => (item.places === sendData.place && sendData.src === item.src))) {
-                        localStorage.setItem("store", JSON.stringify([...newArr, sendData]));
-                    }
-                } else {
-                    localStorage.setItem("store", JSON.stringify([sendData]));
-                }
-                setInitial();
-                dispatch(incrementNavCount());
-                handleClose();
+                dispatch(upload({ currentUser, styles, sizes, data }))
+                    .unwrap()
+                    .then(() => {
+                        setInitial();
+                        dispatch(incrementNavCount());
+                        handleClose();
+                    });
             }
         } catch (error) {
             toast.error("Ошибка в работе сервера");

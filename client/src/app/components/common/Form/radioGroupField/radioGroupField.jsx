@@ -2,12 +2,25 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onChange, value }) => {
+    const handleClick = ({ target }) => {
+        if (value.some(el => el === target.value)) {
+            onChange({ [name]: value.filter(el => el !== target.value) });
+        } else {
+            onChange({ [name]: [...value, target.value] });
+        }
+    };
+
     const handleChange = ({ target }) => {
-        onChange({ [name]: typeof value === "string" ? target.value : [...value, target.value] });
+        if (typeof value === "string") {
+            onChange({
+                [name]: target.value
+            });
+        }
     };
     useEffect(() => {
         arr.length === 1 && onChange({ [name]: arr[0] });
     }, [arr]);
+
     return (
         <div
             className="radio-group"
@@ -18,6 +31,7 @@ const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onC
                         return (
                             <div key={el} className="mr-2 mb-2">
                                 <input
+                                    { ...(Array.isArray(value) ? { onClick: handleClick } : {})}
                                     onChange={handleChange}
                                     className="radio-input"
                                     id={el}

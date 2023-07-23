@@ -7,6 +7,8 @@ import LogRegLayout from "../../../layouts/logRegLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { incrementNavCount } from "../../../store/count";
 import { getCurrentUserSelector } from "../../../store/users";
+import { ReactComponent as TrashIcon } from "../../../../icons/trashIcon.svg";
+import { deleteTatoo } from "../../../store/tatoo";
 
 const TatoosModal = ({ tatoo, onClose, show }) => {
     const dispatch = useDispatch();
@@ -25,6 +27,10 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
 
     const handleChoose = (data) => {
         setData(data);
+    };
+
+    const handleDelete = () => {
+        dispatch(deleteTatoo(tatoo));
     };
     const handleSubmit = () => {
         const obj = { _id: tatoo.src + data + Date.now(), place: data, src: tatoo.src };
@@ -48,6 +54,11 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
                         ? <div className="first-page d-flex">
                             <img src={`/${tatoo.src}`} alt="" className="img-modal mr-4 color-shadow-large"/>
                             <div className="d-flex flex-column">
+                                {currentUser?.rate &&
+                                    <button onClick={handleDelete} className="btn btn-danger flex-self-end">
+                                        <TrashIcon size={16}/>
+                                    </button>
+                                }
                                 <TatooForm1 tatoo={tatoo} onChange={handleChoose} value={data}/>
                                 {currentUser
                                     ? <button disabled={data === ""} onClick={handleSubmit} className="btn btn-large btn-primary flex-self-end">Заказать</button>

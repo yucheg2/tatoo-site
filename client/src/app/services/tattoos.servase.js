@@ -10,6 +10,10 @@ const tattoosService = {
     create: async function(payload) {
         const { data } = await httpService.post(this.tatoosEndPoint, payload);
         return data;
+    },
+    remove: async function(tatooId, style, fileName) {
+        const { data } = await httpService.delete(this.tatoosEndPoint + `${tatooId}/${style}/${fileName}`);
+        return data;
     }
 };
 

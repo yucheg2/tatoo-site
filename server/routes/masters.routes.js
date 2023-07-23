@@ -1,4 +1,5 @@
 const express = require("express")
+const authMiddleware = require("../middleware/auth.middleware")
 const auth = require("../middleware/auth.middleware")
 const Masters = require("../models/Masters")
 
@@ -152,5 +153,31 @@ router.route("/:masterId/comments")
             })
         }
     })
+
+router.delete("/:masterId/comments/:comentId", authMiddleware, async(req,res) => {
+    try {
+        const {masterId, comentId} = req.params
+        const m = await Masters.findById(masterId)
+
+        if ( !m || req.user._id !== masterId) {
+            return res.status(401).json({
+                message: "Unauthorized" 
+            })
+        }
+        const comments = Object.values(m.comments)
+
+        const filtred = comments.filter((c)=> c._id !== comentId)
+        const obj = filtred.reduce((acc, c)=> {
+            return {...acc, [c._id]: {...c}}
+        },{})
+        await m.updateOne({comments:obj})
+        res.send(comentId)
+    } catch (error) {
+        res.status(500).json({
+            message: "На сервере произошла ошибка :(",
+            error
+        })
+    }
+})
 
 module.exports = router

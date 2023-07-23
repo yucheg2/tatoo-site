@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import commentsService from "../services/comments.service";
+import { localStorageService } from "../services/localstorage.service";
 import createErrorMessage from "../utils/createErrorMessage";
 import getNameById from "../utils/getUserName";
 
@@ -7,7 +8,7 @@ export const addComment = createAsyncThunk(
     "comments/addComment",
     async function({ masterId, send }, { rejectWithValue }) {
         try {
-            const { data } = await commentsService.add(masterId, send);
+            const data = await commentsService.add(masterId, send);
             return data;
         } catch (error) {
             return rejectWithValue(createErrorMessage(error));
@@ -49,18 +50,21 @@ const commentsSlice = createSlice({
         },
         requestFaild(state, action) {
             state.error = action.payload;
+        },
+        removed(state, action) {
+            state.entieties = state.entieties.filter((c) => c._id !== action.payload);
         }
     }
 });
 
 const { actions, reducer: commentsReducer } = commentsSlice;
 
-const { requested, resived, requestFaild } = actions;
+const { requested, resived, requestFaild, removed } = actions;
 
 export const loadComments = (masterId) => async(dispatch) => {
     dispatch(requested());
     try {
-        const { data } = await commentsService.get(masterId);
+        const data = await commentsService.get(masterId);
         if (data) {
             const comments = Object.values(data);
             const commentsWithName = await Promise.all(comments.map(async(com) => ({
@@ -71,6 +75,16 @@ export const loadComments = (masterId) => async(dispatch) => {
         } else {
             dispatch(resived([]));
         }
+    } catch (error) {
+        dispatch(requestFaild(createErrorMessage(error)));
+    }
+};
+
+export const removeComment = (commentId) => async(dispatch) => {
+    dispatch({ type: "comments/removeRequested" });
+    try {
+        const id = await commentsService.remove(localStorageService.getUserId(), commentId);
+        dispatch(removed(id));
     } catch (error) {
         dispatch(requestFaild(createErrorMessage(error)));
     }

@@ -131,7 +131,6 @@ router.post("/token", async (req, res) => {
 
     const data = await tokenService.validateRefresh(refreshToken)
     const dbToken = await tokenService.findInDB(refreshToken)
-    console.log(data, dbToken)
 
     if (!data || !dbToken || data._id !==dbToken?.user.toString()) {
         return res.status(401).json({
