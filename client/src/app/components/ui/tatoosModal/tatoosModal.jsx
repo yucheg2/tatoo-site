@@ -61,7 +61,7 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
                                 }
                                 <TatooForm1 tatoo={tatoo} onChange={handleChoose} value={data}/>
                                 {currentUser
-                                    ? <button disabled={data === ""} onClick={handleSubmit} className="btn btn-large btn-primary flex-self-end">Заказать</button>
+                                    ? (!currentUser.rate && <button disabled={data === ""} onClick={handleSubmit} className="btn btn-large btn-primary flex-self-end">Заказать</button>)
                                     : (
                                         <div className="d-flex flex-column flex-self-end">
                                             <button onClick={handlNext} className="btn btn-large btn-primary flex-self-end">Далее</button>
