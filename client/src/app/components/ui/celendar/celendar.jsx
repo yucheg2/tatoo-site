@@ -7,14 +7,16 @@ import "./index.css";
 import OrderCheck from "./orderCheck";
 import CommentsForm from "../commentsModal/commentsForm";
 import { useDispatch, useSelector } from "react-redux";
-import { cancelOrder } from "../../../store/users";
+import { cancelOrder, compleatOrder, getCurrentUserSelector } from "../../../store/users";
 import formateDate from "../../../utils/formateDate";
 import { getMastersListSelectors } from "../../../store/masters";
 import selfMadeService from "../../../services/selfMade.service";
+import OrderBlockForMaster from "./orderBlockForMaster";
 
 const Celendar = ({ order }) => {
     const dispatch = useDispatch();
     const masters = useSelector(getMastersListSelectors());
+    const currentUser = useSelector(getCurrentUserSelector());
 
     const ordersObj = formateOrders(order, masters);
     const dates = Object.keys(ordersObj);
@@ -40,7 +42,7 @@ const Celendar = ({ order }) => {
             .unwrap()
             .then(() => {
                 if (ordersObj[selectedDate].orders.some(t => t.isSelfMade)) {
-                    selfMadeService.removeOrder();
+                    selfMadeService.removeFromOrder(currentUser.rate ? data.user : currentUser._id, data.date);
                 }
                 if (firstCancel) {
                     setSelectedDate(dates[1]);
@@ -59,13 +61,34 @@ const Celendar = ({ order }) => {
 
         dispatch(cancelOrder({
             orderData: { master: orderObject.master.id, date: orderObject.date },
-            txt: "Отзыв отправлен!"
+            txt: "Отзыв отправлен!",
+            isCompleat: true
         }))
             .unwrap()
             .then(() => {
                 if (ordersObj[selectedDate].orders.some(t => t.isSelfMade)) {
-                    selfMadeService.removeOrder();
+                    selfMadeService.removeFromOrder(currentUser._id, orderObject.date);
                 }
+                if (firstCancel) {
+                    setSelectedDate(dates[1]);
+                } else {
+                    setSelectedDate(dates[0]);
+                }
+                setFeedbackMode(false);
+            });
+    };
+
+    const handleCompleat = async() => {
+        const orderObject = ordersObj[selectedDate];
+
+        const firstCancel = formateDate(orderObject.date).str === dates[0];
+
+        dispatch(compleatOrder({
+            orderData: { user: orderObject.user._id, date: orderObject.date },
+            txt: "Информация отправлена"
+        }))
+            .unwrap()
+            .then(() => {
                 if (firstCancel) {
                     setSelectedDate(dates[1]);
                 } else {
@@ -91,7 +114,11 @@ const Celendar = ({ order }) => {
                             ? <OrderCheck order={selectedTatoo} onClose={handleCloseOrderCheck}/>
                             : feedbackMode && ordersObj[selectedDate]?.master?.id
                                 ? <CommentsForm masterId={ordersObj[selectedDate]?.master?.id} onSubmit={handleSendFeedback} onClose={handleToggleFeedback}/>
-                                : ordersObj[selectedDate] && <OrderBlock onFeedback={handleToggleFeedback} onCancel={handleCancel} onOrder={handleOrderCheck} {...ordersObj[selectedDate]}/>}
+                                : ordersObj[selectedDate] &&
+                                    (currentUser.rate
+                                        ? <OrderBlockForMaster onCompleat={handleCompleat} onCancel={handleCancel} onOrder={handleOrderCheck} {...ordersObj[selectedDate]}/>
+                                        : <OrderBlock onFeedback={handleToggleFeedback} onCancel={handleCancel} onOrder={handleOrderCheck} {...ordersObj[selectedDate]}/>)
+                        }
                     </div>
                 </div>
                 : <h2 className="text-center color-fg-subtle">У вас нет сеансов</h2>}

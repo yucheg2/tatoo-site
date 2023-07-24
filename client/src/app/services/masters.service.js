@@ -1,4 +1,5 @@
 import httpService from "./http.service";
+import { localStorageService } from "./localstorage.service";
 
 const mastersService = {
     mastersEndPoint: "masters/",
@@ -25,6 +26,11 @@ const mastersService = {
         const endPoint = this.mastersEndPoint + `${masterId}/order/${date}`;
 
         const { data } = await httpService.delete(endPoint);
+        return data;
+    },
+    edit: async function(payload) {
+        const endPoint = this.mastersEndPoint + localStorageService.getUserId();
+        const { data } = await httpService.put(endPoint, payload);
         return data;
     }
 };

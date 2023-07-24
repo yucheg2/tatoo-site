@@ -37,21 +37,63 @@ export const signIn = createAsyncThunk(
 
 export const cancelOrder = createAsyncThunk(
     "users/cancelOrder",
-    async function({ orderData, txt }, { getState, rejectWithValue }) {
+    async function({ orderData, txt, isCompleat }, { getState, rejectWithValue }) {
         const { currentUser } = getState().users;
         const newObj = {};
         try {
-            await Promise.all([
-                userServuse.clearOrder(currentUser._id, orderData.date),
-                mastersService.clearOrder(orderData.master, orderData.date)
-            ]).then(() => {
+            if (isCompleat) {
+                await userServuse.clearOrder(currentUser._id, orderData.date);
                 Object.keys(currentUser.order).forEach((date) => {
                     if (date !== orderData.date) {
                         newObj[date] = currentUser.order[date];
                     };
                 });
                 toast.dark(txt);
+                return newObj;
+            } else {
+                await Promise.all(
+                    localStorage.getItem("isMaster")
+                        ? [
+                            userServuse.clearOrder(orderData.user, orderData.date),
+                            mastersService.clearOrder(currentUser._id, orderData.date)
+                        ]
+
+                        : [
+                            userServuse.clearOrder(currentUser._id, orderData.date),
+                            mastersService.clearOrder(orderData.master, orderData.date)
+                        ]
+                ).then(() => {
+                    Object.keys(currentUser.order).forEach((date) => {
+                        if (date !== orderData.date) {
+                            newObj[date] = currentUser.order[date];
+                        };
+                    });
+                    toast.dark(txt);
+                });
+                return newObj;
+            }
+        } catch (error) {
+            return rejectWithValue(createErrorMessage(error));
+        }
+    }
+);
+
+export const compleatOrder = createAsyncThunk(
+    "users/compleatOrder",
+    async function({ orderData, txt }, { getState, rejectWithValue }) {
+        const newObj = {};
+        const { currentUser } = getState().users;
+
+        try {
+            await userServuse.compleatOrder(orderData.user, orderData.date);
+            await mastersService.clearOrder(currentUser._id, orderData.date);
+
+            Object.keys(currentUser.order).forEach((date) => {
+                if (date !== orderData.date) {
+                    newObj[date] = currentUser.order[date];
+                };
             });
+            toast.dark(txt);
             return newObj;
         } catch (error) {
             return rejectWithValue(createErrorMessage(error));
@@ -173,6 +215,21 @@ const usersSlice = createSlice({
             .addCase(signUp.rejected, (state, action) => {
                 state.error.auth = { ...action.payload };
                 state.loading.authLoading = false;
+            })
+            .addCase(
+                compleatOrder.pending, (state) => {
+                    state.loading.orderLoading = true;
+                }
+            )
+            .addCase(
+                compleatOrder.fulfilled, (state, action) => {
+                    state.currentUser.order = action.payload;
+                    state.loading.orderLoading = false;
+                }
+            )
+            .addCase(compleatOrder.rejected, (state, action) => {
+                state.error.cancelOrder = { ...action.payload };
+                state.loading.orderLoading = false;
             });
     }
 });

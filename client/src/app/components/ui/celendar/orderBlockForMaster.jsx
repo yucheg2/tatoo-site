@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Carousel from "../../common/carousel/carousel";
 import PaginationNP from "../../common/paginationNP";
 
-const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedback }) => {
+const OrderBlockForMaster = ({ date, user, orders, onOrder, onCancel, onCompleat }) => {
     const [page, setPage] = useState(1);
     const pagesCount = orders.length - 1;
 
@@ -18,10 +18,11 @@ const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedb
         setPage(1);
     }, [orders]);
 
-    return orders && master && (<>
-        <div className="d-flex mb-2">
-            <h2 className="mr-1">{`Мастер: ${master.name} `}</h2>
-            <p>{`(${master.rate}/5)`}</p>
+    return orders && user && (<>
+        <div className="d-flex flex-column mb-2">
+            <h2 className="mr-1">{`Заказчик: ${user.name} `}</h2>
+            <p>{user.email}</p>
+            <p>{user.phone}</p>
         </div>
         <div >
             <h2 className="border-bottom mb-2">Заказ</h2>
@@ -54,30 +55,29 @@ const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedb
                 onPageDicrement={handleDic}
                 onPageIncrement={handleInc}/>}
             <div className="d-flex flex-justify-end pt-3">
-                {compleat
-                    ? <button className="btn btn-primary"
-                        onClick={onFeedback}
-                    >Оставить отзыв</button>
-                    : (<button
-                        className="btn btn-danger"
-                        onClick={() => { onCancel({ master: master.id, date }); }}
-                    >
+                <button className="btn btn-primary"
+                    onClick={onCompleat}
+                >Заказ выполнен</button>
+                <button
+                    className="btn btn-danger"
+                    onClick={() => { onCancel({ user: user._id, date }); }}
+                >
                         Отменить заказ
-                    </button>)
-                }
+                </button>
+
             </div>
         </div>
     </>);
 };
 
-export default OrderBlock;
+export default OrderBlockForMaster;
 
-OrderBlock.propTypes = {
-    onFeedback: PropTypes.func,
+OrderBlockForMaster.propTypes = {
+    onCompleat: PropTypes.func,
     date: PropTypes.string,
     onCancel: PropTypes.func,
     compleat: PropTypes.bool,
     onOrder: PropTypes.func,
     orders: PropTypes.array,
-    master: PropTypes.object
+    user: PropTypes.object
 };

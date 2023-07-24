@@ -11,7 +11,6 @@ import { getPlacesIsloadingSelector, getPlacesSelector } from "../../../../store
 import { getCurrentUserSelector } from "../../../../store/users";
 import { toast } from "react-toastify";
 import { incrementNavCount } from "../../../../store/count";
-// import tattoosService from "../../../../services/tattoos.servase";
 import { createNewTatoo, upload } from "../../../../store/tatoo";
 
 const SelfMadeModal = ({ handleClose, show, styles }) => {
@@ -20,7 +19,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     const currentUser = useSelector(getCurrentUserSelector());
 
     const sizes = useSelector(getSizesSelector());
-    const sizesObj = sizes.reduce((acc, el) => {
+    const sizesObj = sizes && sizes.reduce((acc, el) => {
         acc[el._id] = el;
         return acc;
     }, {});
@@ -29,13 +28,11 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     const places = useSelector(getPlacesSelector());
     const placesLoading = useSelector(getPlacesIsloadingSelector());
 
-    const { data, handleChange, setInitial } = useForm({ src: "", style: "", size: "", place: currentUser?.rate ? [] : "" });
+    const { data, handleChange, setInitial } = useForm({ src: "", style: "", size: "", place: "" });
     const [status, setStatus] = useState(1);
 
     useEffect(() => {
-        if (!currentUser) {
-            handleChange({ src: "" });
-        }
+        handleChange({ src: "", place: currentUser?.rate ? [] : "" });
     }, [currentUser]);
 
     const fileSelectedHandler = (fileName) => {

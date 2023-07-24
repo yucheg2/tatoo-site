@@ -16,7 +16,7 @@ export const takeOrder = createAsyncThunk(
             tatoos.map(async(t) => {
                 if (t.isSelfMade) {
                     const arr = t.src.split("\\");
-                    const newSrc = await selfMadeService.loadToOrder(arr[arr.length - 1]);
+                    const newSrc = await selfMadeService.loadToOrder(arr[arr.length - 1], orderData.date);
                     t.src = newSrc;
                 }
                 order.push(t);
@@ -31,7 +31,7 @@ export const takeOrder = createAsyncThunk(
         try {
             Promise.all([userServuse.takeOrder(currentUser._id, sendData(false)),
                 mastersService.takeOrder(orderData.master, sendData(true))])
-                .then((data) => {
+                .then(async(data) => {
                     const issue = data.find((res) => typeof (res) === "string");
                     if (issue) {
                         toast.error(issue);
@@ -42,6 +42,7 @@ export const takeOrder = createAsyncThunk(
                                 mastersService.clearOrder(orderData.master, orderData.date);
                             }
                         }
+                        await selfMadeService.returnToStore(currentUser._id, orderData.date);
                     } else {
                         toast.success("Вы записаны на сеанс!", { position: "bottom-right", theme: "dark" });
                         dispatch(loadCurrentUser());
@@ -92,6 +93,13 @@ const mastersSlice = createSlice({
         },
         requestFaild(state, action) {
             state.error = action.payload;
+        },
+        editRequestSuccess(state, action) {
+            const editedMaster = state.entities.findIndex((m) => m._id === action.payload._id);
+            state.entities[editedMaster] = {
+                ...state.entities[editedMaster],
+                ...action.payload
+            };
         }
     },
     extraReducers: (builder) => {
@@ -127,7 +135,8 @@ const { actions, reducer: mastersReducer } = mastersSlice;
 const {
     requested,
     resived,
-    requestFaild
+    requestFaild,
+    editRequestSuccess
 } = actions;
 
 export const loadMasters = () => async(dispatch) => {
@@ -140,7 +149,16 @@ export const loadMasters = () => async(dispatch) => {
     }
 };
 
-// не забудь добавить лоадеры в кнопках с асинхронными запросами
+export const editMaster = (payload) => async(dispatch) => {
+    dispatch({ type: "masters/editRequested" });
+    try {
+        const data = await mastersService.edit(payload);
+        dispatch(editRequestSuccess(data));
+        dispatch(loadCurrentUser());
+    } catch (error) {
+        dispatch(requestFaild(error.message));
+    }
+};
 
 // selectors
 

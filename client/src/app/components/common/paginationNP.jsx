@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 const PaginationNP = ({ pageNumber, pagesCount, onPageDicrement, onPageIncrement }) => {
     const prevAriaDisabled = pageNumber === 1;
     const nextAriaDisabled = pageNumber === pagesCount;
-    return (
-        <nav className="paginate-container mb-0" aria-label="Pagination">
+    if (pagesCount > 1) {
+        return (<nav className="paginate-container mb-0" aria-label="Pagination">
             <div className="pagination">
                 <span
                     className={"previous_page f2 " + (!prevAriaDisabled ? "color-fg-default" : "")}
@@ -22,8 +22,8 @@ const PaginationNP = ({ pageNumber, pagesCount, onPageDicrement, onPageIncrement
                     Далее
                 </span>
             </div>
-        </nav>
-    );
+        </nav>);
+    }
 };
 
 PaginationNP.propTypes = {

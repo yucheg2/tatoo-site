@@ -28,7 +28,7 @@ const PhotoFiedl = ({ img, onChange, currentUser }) => {
         if (file?.type.includes("image")) {
             setImgFile(file);
         } else {
-            toast.error("Вставте фотографию");
+            toast.error("Вставте картинку");
         }
     };
     return (

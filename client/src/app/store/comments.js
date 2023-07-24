@@ -97,5 +97,3 @@ export const getCommentsLoadingStatus = () => (state) => state.comments.loading.
 export const getCommentsList = () => (state) => state.comments.entieties;
 
 export default commentsReducer;
-
-// ДОБАВИТЬ ЛОАДЕРЫ

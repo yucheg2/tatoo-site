@@ -32,6 +32,27 @@ router.route("/:masterId")
             })
         }
     })
+    .put(authMiddleware, async (req, res) => {
+        try {
+            const {masterId} = req.params
+        
+            if (masterId !== req.user._id) {
+                return res.status(401).json({
+                    message: "Unauthorized" 
+                })
+            }
+            await Masters.findByIdAndUpdate(
+                masterId,
+                req.body
+            )
+            const master = await Masters.findById(masterId)
+            res.send(master)
+        } catch (error) {
+            res.status(500).json({
+                message: "На сервере произошла ошибка :("
+            })
+        }
+    })
 
 router.route("/:masterId/order/:date")
     .delete( auth, async(req, res) => {
@@ -46,7 +67,7 @@ router.route("/:masterId/order/:date")
                 })
             }
 
-            if ( req.user._id !== master.order[date].person._id) {
+            if ( !(masterId == req.user._id || req.user._id == master.order[date].person._id)) {
                 return res.status(401).json({
                     message: "Unauthorized" 
                 })

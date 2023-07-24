@@ -124,16 +124,16 @@ router.route("/storage/:userId")
         }
     })
 
-router.route("/order/:userId")
+router.route("/order/:userId/:date")
     .post(async (req,res)=> {
 
         try {
 
-            const {userId} = req.params
+            const {userId, date} = req.params
             const {fileName} = req.body
         
             const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
-            const orderPath = path.join(__dirname, "..", "sketches", userId, "order")
+            const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
             if (fs.existsSync(storePath)) {
                 if (!fs.existsSync(orderPath)) {
                     fs.mkdirSync(orderPath)
@@ -142,7 +142,7 @@ router.route("/order/:userId")
                 const newPath = path.join(orderPath, fileName)
                 return fs.rename(oldPath, newPath, function (err) {
                     if (err) throw err
-                    res.send(`sketches\\${userId}\\order\\${fileName}`)
+                    res.send(`sketches\\${userId}\\order\\${date}\\${fileName}`)
                 })
             } 
             res.json({
@@ -160,9 +160,9 @@ router.route("/order/:userId")
     })
     .delete((req,res) => {
         try {
-            const {userId} = req.params
+            const {userId, date} = req.params
 
-            const orderPath = path.join(__dirname, "..", "sketches", userId, "order")
+            const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
             if (fs.existsSync(orderPath)) {
                 fs.rmSync(orderPath, { recursive: true, force: true })
                 return res.send(null)
@@ -180,4 +180,37 @@ router.route("/order/:userId")
             })
         }
     })
+    .put(async (req,res)=> {
+
+        try {
+
+            const {userId, date} = req.params
+        
+            const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
+            const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
+            
+            if (fs.existsSync(storePath)) {
+                
+                fs.readdirSync(orderPath).forEach(file=>{
+                    const oldPath = path.join(storePath, file)
+                    const newPath = path.join(orderPath, file)
+                    fs.rename(newPath, oldPath, function (err) {
+                        if (err) throw err
+                    })
+                })
+                
+                return res.send(null)
+            } 
+            res.json({
+                error: {
+                    message: "Файл не найден",
+                    code: 400
+                }
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: "На сервере произошла ошибка :(",
+                error
+            })
+        }})
 module.exports = router

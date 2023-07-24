@@ -4,12 +4,12 @@ import "./index.css";
 
 const DateField = ({ label, name, value, onChange }) => {
     const date = new Date();
-    // const getMin = () => {
-    //     const day = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
-    //     const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-    //     const year = date.getFullYear();
-    //     return `${year}-${month}-${day}`;
-    // };
+    const getMin = () => {
+        const day = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
+        const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+    };
     const getMax = () => {
         const day = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : date.getDate() + 1;
         const month = date.getMonth() + 2 < 10 ? `0${date.getMonth() + 2}` : date.getMonth() + 2;
@@ -22,7 +22,7 @@ const DateField = ({ label, name, value, onChange }) => {
     return (
         <div className="d-flex">
             <label htmlFor="date" className="h3 mr-2">{label}</label>
-            <input type="date" onChange={handleChange} value={value} className="border rounded" name={name} max={getMax()}/>
+            <input type="date" onChange={handleChange} value={value} className="border rounded" name={name} min={getMin()} max={getMax()}/>
         </div>
     );
 };

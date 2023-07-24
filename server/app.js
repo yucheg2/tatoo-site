@@ -10,8 +10,6 @@ const cors = require("cors")
 const PORT = config.get("port")
 
 const app = express()
-//prostoyurka1223
-//1488228420
 app.use(express.json())
 app.use("/sketches", express.static(path.join(__dirname, "sketches")))
 app.use(express.urlencoded({extended: false}))

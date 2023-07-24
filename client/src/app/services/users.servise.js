@@ -18,13 +18,19 @@ const userServuse = {
     takeOrder: async(id, orderData) => {
         const endPoint = usersEndPoint + `${id}/order/${orderData.date}`;
 
-        const { data } = await httpService.put(endPoint, orderData);
+        const { data } = await httpService.post(endPoint, orderData);
         return data;
     },
-    clearOrder: async function(id, date) {
+    clearOrder: async(id, date) => {
         const endPoint = usersEndPoint + `${id}/order/${date}`;
 
         const data = await httpService.delete(endPoint);
+        return data;
+    },
+    compleatOrder: async(id, date) => {
+        const endPoint = usersEndPoint + `${id}/order/${date}`;
+
+        const { data } = await httpService.put(endPoint, { compleat: true });
         return data;
     }
 };

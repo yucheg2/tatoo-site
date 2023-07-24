@@ -38,7 +38,7 @@ const RadioGroupField = ({ showCircle = true, display = "d-flex", arr, name, onC
                                     type="radio"
                                     value={el}
                                     name={el}
-                                    checked= { typeof value === "string" ? value === el : value.some((item) => item === el)}
+                                    checked= { Array.isArray(value) ? value.some((item) => item === el) : value === el}
                                     style={!showCircle
                                         ? {
                                             display: "none",
