@@ -9,6 +9,7 @@ import { incrementNavCount } from "../../../store/count";
 import { getCurrentUserSelector } from "../../../store/users";
 import { ReactComponent as TrashIcon } from "../../../../icons/trashIcon.svg";
 import { deleteTatoo } from "../../../store/tatoo";
+import { localStorageService } from "../../../services/localstorage.service";
 
 const TatoosModal = ({ tatoo, onClose, show }) => {
     const dispatch = useDispatch();
@@ -34,14 +35,14 @@ const TatoosModal = ({ tatoo, onClose, show }) => {
     };
     const handleSubmit = () => {
         const obj = { _id: tatoo.src + data + Date.now(), place: data, src: tatoo.src };
-        const store = localStorage.getItem("store");
+        const store = localStorageService.getStore();
         if (store) {
             const newArr = JSON.parse(store);
             if (!newArr.some((item) => (item.places === obj.place && obj.src === item.src))) {
-                localStorage.setItem("store", JSON.stringify([...newArr, obj]));
+                localStorageService.setStore(JSON.stringify([...newArr, obj]));
             }
         } else {
-            localStorage.setItem("store", JSON.stringify([obj]));
+            localStorageService.setStore(JSON.stringify([obj]));
         }
         handleClose();
         dispatch(incrementNavCount());

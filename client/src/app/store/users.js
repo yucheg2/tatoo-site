@@ -298,4 +298,6 @@ export const getCurrentUserSelector = () => (state) => state.users.currentUser;
 
 export const getEditErrorsSelector = () => (state) => state.users.error.edit;
 
+export const cancelOrderLoadingSelector = () => (state) => state.users.loading.orderLoading;
+
 export default usersReducer;

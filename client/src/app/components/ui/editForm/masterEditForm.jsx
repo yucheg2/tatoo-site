@@ -19,9 +19,12 @@ const MasterEditForm = ({ name, email, favStyles, description }) => {
     const initialData = { name, email, style: faveStyleArr, desc: description };
     const { data, handleChange } = useForm(initialData);
     const [error, setError] = useState({});
-    const isBlock = Object.keys(error).length > 0 ||
+    const isBlock = (Object.keys(error).length > 0 ||
         Object.values(data).some((s) => s === "") ||
-        Object.keys(data).every((key) => data[key] === initialData[key]);
+        Object.keys(data).every((key) => {
+            return data[key] === initialData[key] ||
+            (faveStyleArr.length === data[key].length && faveStyleArr.every((s) => data[key].includes(s)));
+        }));
     const handleSubmit = async(e) => {
         e.preventDefault();
         const sendData = {

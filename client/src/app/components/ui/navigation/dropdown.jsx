@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { clearNavCount } from "../../../store/count";
 import { signOut } from "../../../store/users";
 import MasterEditForm from "../editForm/masterEditForm";
+import { localStorageService } from "../../../services/localstorage.service";
 
 const DropDown = (data) => {
     const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const DropDown = (data) => {
             <div data-color-mode="light" data-light-theme="light">
                 <Modal show={show} onClose={handleCloseModal}>
                     {status === "Edit"
-                        ? localStorage.getItem("isMaster")
+                        ? localStorageService.getIsMaster()
                             ? <MasterEditForm {...data}/>
                             : <EditForm {...data}/>
                         : <Celendar order={data.order}/>

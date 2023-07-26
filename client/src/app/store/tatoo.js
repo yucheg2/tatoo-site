@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { localStorageService } from "../services/localstorage.service";
 import selfMadeService from "../services/selfMade.service";
 import tattoosService from "../services/tattoos.servase";
 import createErrorMessage from "../utils/createErrorMessage";
@@ -36,32 +37,55 @@ const tatoosSlice = createSlice({
     name: "tatoos",
     initialState: {
         entities: null,
-        loading: true,
+        loading: {
+            entities: true,
+            upload: false,
+            create: false
+        },
         error: null
     },
     reducers: {
+        tatooCreateRequested(state) {
+            state.loading.create = true;
+        },
+        tatoCreated(state) {
+            state.loading.create = false;
+        },
         resived(state, action) {
             state.entities = Object.values(action.payload);
-            state.loading = false;
+            state.loading.entities = false;
         },
         requestFaild(state, action) {
             state.error = action.payload;
         },
         requested(state) {
-            state.loading = true;
+            state.loading.entities = true;
         }
     },
     extraReducers: (builder) => {
         builder
+            .addCase(upload.pending, (state) => {
+                state.loading.upload = true;
+            })
+            .addCase(upload.fulfilled, (state) => {
+                state.loading.upload = false;
+            })
             .addCase(upload.rejected, (state, action) => {
                 state.error = action.payload;
+                state.loading.upload = false;
             });
     }
 });
 
 const { actions, reducer: tatoosReducer } = tatoosSlice;
 
-const { resived, requested, requestFaild } = actions;
+const {
+    resived,
+    requested,
+    requestFaild,
+    tatooCreateRequested,
+    tatoCreated
+} = actions;
 
 export const loadTatoos = () => async(dispatch) => {
     dispatch(requested());
@@ -74,7 +98,7 @@ export const loadTatoos = () => async(dispatch) => {
 };
 
 export const createNewTatoo = (sizes, styles, data) => async(dispatch) => {
-    dispatch({ type: "tatoos/tatooCreateRequested" });
+    dispatch(tatooCreateRequested());
     try {
         const sendData = {
             ...data,
@@ -82,8 +106,8 @@ export const createNewTatoo = (sizes, styles, data) => async(dispatch) => {
             style: styles.find((el) => el._id === data.style).name
         };
         await tattoosService.create(sendData);
+        dispatch(tatoCreated());
         dispatch(loadTatoos());
-        dispatch({ type: "tatoos/tatoCreated" });
     } catch (error) {
         dispatch(requestFaild(error.message));
     }
@@ -106,11 +130,15 @@ export const deleteTatoo = (tatoo) => async(dispatch) => {
 
 export const getTatoosSelector = () => (state) => state.tatoos.entities;
 
-export const getTatoosIsloadingSelector = () => (state) => state.tatoos.loading;
+export const getTatoosIsloadingSelector = () => (state) => state.tatoos.loading.entities;
+
+export const getUploadLoadingSelector = () => (state) => state.tatoos.loading.upload;
+
+export const getCreateLoadingSelector = () => (state) => state.tatoos.loading.create;
 
 export const getTatooInStorageSelector = () => (state) => {
-    const storage = localStorage.getItem("store");
-    const isLoading = state.tatoos.loading;
+    const storage = localStorageService.getStore();
+    const isLoading = state.tatoos.loading.entities;
     const tatoos = state.tatoos.entities;
 
     const addTatoos = storage && !isLoading && JSON.parse(storage).map((t) => {

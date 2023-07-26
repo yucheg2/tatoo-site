@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Carousel from "../../common/carousel/carousel";
 import PaginationNP from "../../common/paginationNP";
+import { useSelector } from "react-redux";
+import { cancelOrderLoadingSelector } from "../../../store/users";
 
 const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedback }) => {
     const [page, setPage] = useState(1);
     const pagesCount = orders.length - 1;
+
+    const waiting = useSelector(cancelOrderLoadingSelector());
 
     const handleInc = () => {
         setPage(p => p + 1);
@@ -55,14 +59,21 @@ const OrderBlock = ({ date, master, orders, onOrder, compleat, onCancel, onFeedb
                 onPageIncrement={handleInc}/>}
             <div className="d-flex flex-justify-end pt-3">
                 {compleat
-                    ? <button className="btn btn-primary"
+                    ? <button
+                        className="btn btn-primary"
                         onClick={onFeedback}
-                    >Оставить отзыв</button>
+                        disabled = {waiting}
+                    >{waiting
+                            ? <><span>Ожидаем</span><span className="AnimatedEllipsis"></span></>
+                            : "Оставить отзыв"}</button>
                     : (<button
                         className="btn btn-danger"
                         onClick={() => { onCancel({ master: master.id, date }); }}
+                        disabled = {waiting}
                     >
-                        Отменить заказ
+                        {waiting
+                            ? <><span>Ожидаем</span><span className="AnimatedEllipsis"></span></>
+                            : "Отменить заказ"}
                     </button>)
                 }
             </div>

@@ -1,12 +1,12 @@
 import httpService from "./http.service";
 
-const placesService = {
-    placesEndPoint: "info/places/",
+class PlacesService {
+    #placesEndPoint = "info/places/";
 
-    get: async function() {
-        const { data } = await httpService.get(this.placesEndPoint);
+    async get() {
+        const { data } = await httpService.get(this.#placesEndPoint);
         return data;
     }
 };
 
-export default placesService;
+export default new PlacesService();

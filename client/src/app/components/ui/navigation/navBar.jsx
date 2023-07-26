@@ -37,7 +37,7 @@ const NavBar = () => {
                                 return (
                                     <Link
                                         key={rout.path}
-                                        className="UnderlineNav-item"
+                                        className="UnderlineNav-item f4"
                                         to={rout.path}
                                         aria-current={isSelected(rout.path)}
                                     >

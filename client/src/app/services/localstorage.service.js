@@ -11,6 +11,10 @@ export function setTokens({ userId, refreshToken, expiresIn = 3600, accessToken 
     localStorage.setItem(ACCESSTOKEN_KEY, accessToken);
 }
 
+export function setStore(str) {
+    localStorage.setItem("store", str);
+}
+
 export function getUserId() {
     return localStorage.getItem(USERID_KEY);
 }
@@ -27,6 +31,14 @@ export function getRefreshToken() {
     return localStorage.getItem(REFRESH_KEY);
 }
 
+export function getIsMaster() {
+    return localStorage.getItem("isMaster");
+}
+
+export function getStore() {
+    return localStorage.getItem("store");
+}
+
 export function deleteTokens() {
     localStorage.removeItem(USERID_KEY);
     localStorage.removeItem(REFRESH_KEY);
@@ -36,9 +48,12 @@ export function deleteTokens() {
 
 export const localStorageService = {
     setTokens,
+    setStore,
     getUserId,
     getExpires,
     getRefreshToken,
     getAccessTokent,
-    deleteTokens
+    getIsMaster,
+    deleteTokens,
+    getStore
 };

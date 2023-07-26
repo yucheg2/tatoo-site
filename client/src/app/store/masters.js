@@ -42,7 +42,12 @@ export const takeOrder = createAsyncThunk(
                                 mastersService.clearOrder(orderData.master, orderData.date);
                             }
                         }
-                        await selfMadeService.returnToStore(currentUser._id, orderData.date);
+                        const selfMades = order.filter((t) => t.isSelfMade);
+                        Promise.all(selfMades.map(async(t) => {
+                            const arr = t.src.split("\\");
+                            const fileName = arr[arr.length - 1];
+                            return await selfMadeService.returnToStore(currentUser._id, orderData.date, fileName);
+                        }));
                     } else {
                         toast.success("Вы записаны на сеанс!", { position: "bottom-right", theme: "dark" });
                         dispatch(loadCurrentUser());
@@ -155,6 +160,7 @@ export const editMaster = (payload) => async(dispatch) => {
         const data = await mastersService.edit(payload);
         dispatch(editRequestSuccess(data));
         dispatch(loadCurrentUser());
+        toast.success("Данные изменены!");
     } catch (error) {
         dispatch(requestFaild(error.message));
     }

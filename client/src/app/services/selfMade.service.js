@@ -57,18 +57,18 @@ class SelfMadeService {
         return data;
     }
 
-    async removeFromOrder(userId, date, fileName) {
+    async removeOrder(userId, date) {
         const { data } = await httpService.delete(
-            this.#endPoint + "order/" + userId + "/" + date,
-            { fileName }
+            this.#endPoint + "order/" + `${userId}/${date}`
         );
 
         return data;
     }
 
-    async returnToStore(userId, date) {
+    async returnToStore(userId, date, fileName) {
         const { data } = await httpService.put(
-            this.#endPoint + "order/" + userId + "/" + date
+            this.#endPoint + "order/" + userId + "/" + date,
+            { fileName }
         );
 
         return data;

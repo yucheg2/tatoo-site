@@ -42,7 +42,7 @@ const Celendar = ({ order }) => {
             .unwrap()
             .then(() => {
                 if (ordersObj[selectedDate].orders.some(t => t.isSelfMade)) {
-                    selfMadeService.removeFromOrder(currentUser.rate ? data.user : currentUser._id, data.date);
+                    selfMadeService.removeOrder(currentUser.rate ? data.user : currentUser._id, data.date);
                 }
                 if (firstCancel) {
                     setSelectedDate(dates[1]);
@@ -67,7 +67,7 @@ const Celendar = ({ order }) => {
             .unwrap()
             .then(() => {
                 if (ordersObj[selectedDate].orders.some(t => t.isSelfMade)) {
-                    selfMadeService.removeFromOrder(currentUser._id, orderObject.date);
+                    selfMadeService.removeOrder(currentUser._id, orderObject.date);
                 }
                 if (firstCancel) {
                     setSelectedDate(dates[1]);

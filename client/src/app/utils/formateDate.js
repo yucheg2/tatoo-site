@@ -3,9 +3,7 @@ const formateDate = (date) => {
     const month = date.slice(5, 7);
     const year = date.slice(0, 4);
 
-    const isCompleat = new Date(Number(year), Number(month) - 1, Number(day)) < Date.now();
-
-    return ({ str: `${day}.${month}.${year}`, isCompleat });
+    return ({ str: `${day}.${month}.${year}` });
 };
 
 export default formateDate;

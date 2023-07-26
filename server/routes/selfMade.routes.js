@@ -133,13 +133,16 @@ router.route("/order/:userId/:date")
             const {fileName} = req.body
         
             const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
-            const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
+            const orderPath = path.join(__dirname, "..", "sketches", userId, "order")
             if (fs.existsSync(storePath)) {
                 if (!fs.existsSync(orderPath)) {
                     fs.mkdirSync(orderPath)
                 }
+                if (!fs.existsSync(path.join(orderPath, date))) {
+                    fs.mkdirSync(path.join(orderPath, date))
+                }
                 const oldPath = path.join(storePath, fileName)
-                const newPath = path.join(orderPath, fileName)
+                const newPath = path.join(orderPath, date, fileName)
                 return fs.rename(oldPath, newPath, function (err) {
                     if (err) throw err
                     res.send(`sketches\\${userId}\\order\\${date}\\${fileName}`)
@@ -181,22 +184,18 @@ router.route("/order/:userId/:date")
         }
     })
     .put(async (req,res)=> {
-
         try {
-
             const {userId, date} = req.params
-        
+            const {fileName} = req.body
             const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
             const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
             
             if (fs.existsSync(storePath)) {
                 
-                fs.readdirSync(orderPath).forEach(file=>{
-                    const oldPath = path.join(storePath, file)
-                    const newPath = path.join(orderPath, file)
-                    fs.rename(newPath, oldPath, function (err) {
-                        if (err) throw err
-                    })
+                const oldPath = path.join(storePath, fileName)
+                const newPath = path.join(orderPath, fileName)
+                fs.rename(newPath, oldPath, function (err) {
+                    if (err) throw err
                 })
                 
                 return res.send(null)

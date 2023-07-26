@@ -12,7 +12,7 @@ const StorageCheckOut = ({ waiting, price, onSubmit, masters }) => {
         onSubmit(data);
     };
 
-    const isDisabled = data.master === "" || data.date === "";
+    const isDisabled = data.master === "" || data.date === "" || waiting;
     return (
         <div className="checkout-storage flex-auto ">
             <div className="checkout-content p-2 rounded-left-3 color-shadow-extra-large">
@@ -29,12 +29,12 @@ const StorageCheckOut = ({ waiting, price, onSubmit, masters }) => {
                     Примерная стоимость: {price}
                 </h4>
                 <div className="d-flex flex-justify-end border-top pt-2">
-                    { waiting
-                        ? <button className="btn btn-primary">
-                            <span>Ожидаем</span><span className="AnimatedEllipsis"></span>
-                        </button>
-                        : <button className="btn btn-primary" disabled={isDisabled} onClick={handleSubmit}>
-                            Записаться
+                    {
+                        <button className="btn btn-primary" disabled={isDisabled} onClick={handleSubmit}>
+                            {!waiting
+                                ? "Записаться"
+                                : <><span>Ожидаем</span><span className="AnimatedEllipsis"></span></>
+                            }
                         </button>
                     }
                 </div>

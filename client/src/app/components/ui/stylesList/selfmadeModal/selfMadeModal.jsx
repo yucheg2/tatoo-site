@@ -11,10 +11,14 @@ import { getPlacesIsloadingSelector, getPlacesSelector } from "../../../../store
 import { getCurrentUserSelector } from "../../../../store/users";
 import { toast } from "react-toastify";
 import { incrementNavCount } from "../../../../store/count";
-import { createNewTatoo, upload } from "../../../../store/tatoo";
+import { createNewTatoo, getCreateLoadingSelector, getUploadLoadingSelector, upload } from "../../../../store/tatoo";
+import { localStorageService } from "../../../../services/localstorage.service";
 
 const SelfMadeModal = ({ handleClose, show, styles }) => {
     const dispatch = useDispatch();
+
+    const uploadWaiting = useSelector(getUploadLoadingSelector());
+    const createWaiting = useSelector(getCreateLoadingSelector());
 
     const currentUser = useSelector(getCurrentUserSelector());
 
@@ -40,7 +44,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     };
 
     const sizeDescription = sizesObj && sizesObj[data.size]?.size;
-    const disabledStatus = Object.values(data).every((d) => d !== "");
+    const disabledStatus = Object.values(data).some((d) => d === "") || uploadWaiting || createWaiting;
 
     const handlNext = () => {
         setStatus(p => !p);
@@ -48,7 +52,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
 
     const handleSubmit = async() => {
         try {
-            if (localStorage.getItem("isMaster")) {
+            if (localStorageService.getIsMaster()) {
                 dispatch(createNewTatoo(sizes, styles, data));
             } else {
                 dispatch(upload({ currentUser, styles, sizes, data }))
@@ -92,8 +96,12 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
                                 handleChange={handleChange}
                             />
                             {currentUser
-                                ? <button onClick={handleSubmit} disabled={!disabledStatus} className="btn btn-large btn-primary flex-self-end">
-                                    { currentUser.rate ? "Добавить" : "Заказать"}
+                                ? <button onClick={handleSubmit} disabled={disabledStatus} className="btn btn-large btn-primary flex-self-end">
+                                    { !(uploadWaiting || createWaiting)
+                                        ? currentUser.rate
+                                            ? "Добавить"
+                                            : "Заказать"
+                                        : <><span>Ожидаем</span><span className="AnimatedEllipsis"></span></>}
                                 </button>
                                 : (
                                     <div className="d-flex flex-column flex-self-end">
