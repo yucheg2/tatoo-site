@@ -40,7 +40,8 @@ const tatoosSlice = createSlice({
         loading: {
             entities: true,
             upload: false,
-            create: false
+            create: false,
+            edit: false
         },
         error: null
     },
@@ -50,6 +51,12 @@ const tatoosSlice = createSlice({
         },
         tatoCreated(state) {
             state.loading.create = false;
+        },
+        tatooEditRequested(state) {
+            state.loading.edit = true;
+        },
+        tatooEdited(state) {
+            state.loading.edit = false;
         },
         resived(state, action) {
             state.entities = Object.values(action.payload);
@@ -84,7 +91,9 @@ const {
     requested,
     requestFaild,
     tatooCreateRequested,
-    tatoCreated
+    tatoCreated,
+    tatooEditRequested,
+    tatooEdited
 } = actions;
 
 export const loadTatoos = () => async(dispatch) => {
@@ -113,6 +122,23 @@ export const createNewTatoo = (sizes, styles, data) => async(dispatch) => {
     }
 };
 
+export const editTatoo = (sizes, styles, data, id, imgChanged) => async(dispatch) => {
+    dispatch(tatooEditRequested());
+    try {
+        const sendData = {
+            ...data,
+            size: sizes.find((s) => s._id === data.size),
+            style: styles.find((el) => el._id === data.style).name,
+            imgChanged
+        };
+        await tattoosService.edit(id, sendData);
+        dispatch(tatooEdited());
+        dispatch(loadTatoos());
+    } catch (error) {
+        dispatch(requestFaild(error.message));
+    }
+};
+
 export const deleteTatoo = (tatoo) => async(dispatch) => {
     dispatch({ type: "tatoos/tatooDeleteRequested" });
     try {
@@ -135,6 +161,8 @@ export const getTatoosIsloadingSelector = () => (state) => state.tatoos.loading.
 export const getUploadLoadingSelector = () => (state) => state.tatoos.loading.upload;
 
 export const getCreateLoadingSelector = () => (state) => state.tatoos.loading.create;
+
+export const getEditLoadingSelector = () => (state) => state.tatoos.loading.edit;
 
 export const getTatooInStorageSelector = () => (state) => {
     const storage = localStorageService.getStore();

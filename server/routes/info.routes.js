@@ -67,6 +67,63 @@ router.route("/tatoos")
         }
     })
 
+router.put("/tatoos/:tatooId", authMiddleware, async (req,res) => {
+    try {
+        const masterId = req.user._id
+        const {tatooId} = req.params
+        const payload = req.body
+
+        const master = await Masters.findById(masterId)
+        if (!master) {
+            return res.status(401).json({
+                message: "Unauthorized" 
+            })
+        }
+
+        const temporeryPath = path.join(__dirname, "..", "sketches", masterId, "temporery")
+        const addedPath = path.join(__dirname, "..", "sketches", "added")
+        const idPath = path.join(addedPath, tatooId)
+
+        if (payload.imgChanged) {
+            if (!fs.existsSync(addedPath)) {
+                fs.mkdirSync(addedPath)
+            }
+            if(fs.existsSync(idPath)) {
+                fs.rmSync(idPath, { recursive: true, force: true })
+            }
+            fs.mkdirSync(idPath)
+    
+            const imgName = fs.readdirSync(temporeryPath)[0]
+            const newImgName = Date.now()+imgName
+            const oldPath = path.join(temporeryPath, imgName)
+            const newPath = path.join(idPath, newImgName)
+            return fs.rename(oldPath, newPath, async function (err) {
+                if (err) throw err
+                const tatoo = await Tatoos.findByIdAndUpdate(
+                    tatooId,
+                    {
+                        ...payload,
+                        src: `sketches\\added\\${tatooId}\\${newImgName}`
+                    }
+                )
+                res.send(tatoo)
+            })
+        }
+        const tatoo = await Tatoos.findByIdAndUpdate(
+            tatooId,
+            {
+                ...payload
+            }
+        )
+        res.send(tatoo)
+    } catch (error) {
+        res.status(500).json({
+            message: "На сервере произошла ошибка :(",
+            error
+        })
+    }
+})
+
 router.delete("/tatoos/:tatooId/:style/:fileName", authMiddleware, async (req,res) => {
     try {
         const masterId = req.user._id

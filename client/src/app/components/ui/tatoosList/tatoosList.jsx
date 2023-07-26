@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ImageCard from "../imageCard/imageCard";
 import TatoosModal from "../tatoosModal/tatoosModal";
+import { localStorageService } from "../../../services/localstorage.service";
+import EditModal from "../tatoosModal/editModal";
 
 const TatoosList = ({ array }) => {
     const [showModal, setShowModal] = useState(false);
@@ -13,6 +15,7 @@ const TatoosList = ({ array }) => {
     const handleClose = () => {
         setShowModal(false);
     };
+
     return (
         <>
             {array.map((t, i) => {
@@ -26,7 +29,10 @@ const TatoosList = ({ array }) => {
                     />
                 </div>;
             })}
-            {selected && <TatoosModal show={showModal} onClose={handleClose} tatoo={selected}/>}
+            {selected && (localStorageService.getIsMaster()
+                ? <EditModal show={showModal} onClose={handleClose} {...selected}/>
+                : <TatoosModal show={showModal} onClose={handleClose} tatoo={selected}/>)
+            }
         </>
     );
 };

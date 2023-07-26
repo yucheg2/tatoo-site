@@ -7,7 +7,7 @@ const createErrorMessage = (error) => {
             errorObj.email = "Пользователь с таким email уже зарегистрирован.";
             return errorObj;
         } else
-        if (message === "EMAIL_NOT_FOUND" || message === "INVALID_PASSWORD" || message === "INVALID_EMAIL") {
+        if (message === "EMAIL_NOT_FOUND" || message === "INVALID_PASSWORD" || message === "INVALID_EMAIL" || message === "INVALID_DATA") {
             errorObj.email = "Почта или пароль введены неверно.";
         } else
         if (message === "CREDENTIAL_TOO_OLD_LOGIN_AGAIN") {

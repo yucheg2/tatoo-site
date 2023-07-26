@@ -35,7 +35,7 @@ const PhotoFiedl = ({ img, onChange, currentUser }) => {
         <div className="photoFiel d-flex flex-column flex-auto mr-4">
             {
                 img
-                    ? <img src={img} alt="Вставте эскиз" className="img-modal color-shadow-large"/>
+                    ? <img src={`/${img}`} alt="Вставте эскиз" className="img-modal color-shadow-large"/>
                     : <div className="emptyPhoto border-dashed p-2 d-flex flex-justify-center flex-items-center rounded-2 flex-auto">
                         <span>Загрузите скетч</span>
                     </div>

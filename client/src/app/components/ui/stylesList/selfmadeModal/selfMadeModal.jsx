@@ -44,7 +44,7 @@ const SelfMadeModal = ({ handleClose, show, styles }) => {
     };
 
     const sizeDescription = sizesObj && sizesObj[data.size]?.size;
-    const disabledStatus = Object.values(data).some((d) => d === "") || uploadWaiting || createWaiting;
+    const disabledStatus = Object.values(data).some((d) => d.length === 0) || uploadWaiting || createWaiting;
 
     const handlNext = () => {
         setStatus(p => !p);

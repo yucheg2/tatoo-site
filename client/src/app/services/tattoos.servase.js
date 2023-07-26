@@ -17,6 +17,11 @@ class TattoosService {
         const { data } = await httpService.delete(this.#tatoosEndPoint + `${tatooId}/${style}/${fileName}`);
         return data;
     }
+
+    async edit(tatooId, payload) {
+        const { data } = await httpService.put(this.#tatoosEndPoint + tatooId, payload);
+        return data;
+    }
 };
 
 export default new TattoosService();
