@@ -3,7 +3,7 @@ const fs = require("fs")
 const fsPromise = require("fs/promises")
 const path = require("path")
 
-const sketchPath = path.join(__dirname, "..","sketches")
+const sketchPath = path.join(__dirname, "..","tatoo")
 async function clear (user) {
     const fileArr = await fsPromise.readdir(path.join(sketchPath, user, "temporery"))
     if(fileArr.length > 0) {
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
         } else if (!fs.existsSync(path.join( sketchPath, req.user._id, "temporery"))) {
             fs.mkdirSync(path.join( sketchPath, req.user._id, "temporery"))
         }
-        cb(null, "sketches/"+req.user._id+"/temporery/")
+        cb(null, "tatoo/"+req.user._id+"/temporery/")
     },
     filename(req, file, cb) {
         clear(req.user._id).then(()=>{

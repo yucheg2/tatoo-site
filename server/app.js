@@ -11,7 +11,7 @@ const PORT = config.get("port")
 
 const app = express()
 app.use(express.json())
-app.use("/sketches", express.static(path.join(__dirname, "sketches")))
+app.use("/tatoo", express.static(path.join(__dirname, "tatoo")))
 app.use(express.urlencoded({extended: false}))
 app.use(cors())
 app.use("/api", routes)

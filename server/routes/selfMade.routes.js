@@ -24,7 +24,7 @@ router.delete("/temporery/:userId", async (req, res) => {
     try {
         const {userId} = req.params
 
-        const temporeryPath = path.join(__dirname, "..", "sketches", userId, "temporery")
+        const temporeryPath = path.join(__dirname, "..", "tatoo", userId, "temporery")
         if (fs.existsSync(temporeryPath)) {
             fs.rmSync(temporeryPath, { recursive: true, force: true })
             return res.send(null)
@@ -49,8 +49,8 @@ router.route("/storage/:userId")
         try {
             const {userId} = req.params
     
-            const temporeryPath = path.join(__dirname, "..", "sketches", userId, "temporery")
-            const storePath = path.join(__dirname, "..", "sketches", userId, "store")
+            const temporeryPath = path.join(__dirname, "..", "tatoo", userId, "temporery")
+            const storePath = path.join(__dirname, "..", "tatoo", userId, "store")
             if (fs.existsSync(temporeryPath)) {
                 if (!fs.existsSync(storePath)) {
                     fs.mkdirSync(storePath)
@@ -61,7 +61,7 @@ router.route("/storage/:userId")
                 const newPath = path.join(storePath, newImgName)
                 return fs.rename(oldPath, newPath, function (err) {
                     if (err) throw err
-                    res.send(`sketches\\${userId}\\store\\${newImgName}`)
+                    res.send(`tatoo\\${userId}\\store\\${newImgName}`)
                 })
             } 
             res.json({
@@ -82,7 +82,7 @@ router.route("/storage/:userId")
             const {fileName} = req.body
             const {userId} = req.params
 
-            const filePath = path.join(__dirname, "..", "sketches", userId, "store", fileName)
+            const filePath = path.join(__dirname, "..", "tatoo", userId, "store", fileName)
             
             if (fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath)
@@ -105,7 +105,7 @@ router.route("/storage/:userId")
         try {
             const {userId} = req.params
 
-            const storePath = path.join(__dirname, "..", "sketches", userId, "store")
+            const storePath = path.join(__dirname, "..", "tatoo", userId, "store")
             if (fs.existsSync(storePath)) {
                 fs.rmSync(storePath, { recursive: true, force: true })
                 return res.send(null)
@@ -132,8 +132,8 @@ router.route("/order/:userId/:date")
             const {userId, date} = req.params
             const {fileName} = req.body
         
-            const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
-            const orderPath = path.join(__dirname, "..", "sketches", userId, "order")
+            const storePath  = path.join(__dirname, "..", "tatoo", userId, "store")
+            const orderPath = path.join(__dirname, "..", "tatoo", userId, "order")
             if (fs.existsSync(storePath)) {
                 if (!fs.existsSync(orderPath)) {
                     fs.mkdirSync(orderPath)
@@ -145,7 +145,7 @@ router.route("/order/:userId/:date")
                 const newPath = path.join(orderPath, date, fileName)
                 return fs.rename(oldPath, newPath, function (err) {
                     if (err) throw err
-                    res.send(`sketches\\${userId}\\order\\${date}\\${fileName}`)
+                    res.send(`tatoo\\${userId}\\order\\${date}\\${fileName}`)
                 })
             } 
             res.json({
@@ -165,7 +165,7 @@ router.route("/order/:userId/:date")
         try {
             const {userId, date} = req.params
 
-            const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
+            const orderPath = path.join(__dirname, "..", "tatoo", userId, "order", date)
             if (fs.existsSync(orderPath)) {
                 fs.rmSync(orderPath, { recursive: true, force: true })
                 return res.send(null)
@@ -187,8 +187,8 @@ router.route("/order/:userId/:date")
         try {
             const {userId, date} = req.params
             const {fileName} = req.body
-            const storePath  = path.join(__dirname, "..", "sketches", userId, "store")
-            const orderPath = path.join(__dirname, "..", "sketches", userId, "order", date)
+            const storePath  = path.join(__dirname, "..", "tatoo", userId, "store")
+            const orderPath = path.join(__dirname, "..", "tatoo", userId, "order", date)
             
             if (fs.existsSync(storePath)) {
                 

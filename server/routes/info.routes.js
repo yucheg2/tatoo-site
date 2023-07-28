@@ -35,8 +35,8 @@ router.route("/tatoos")
                     message: "Unauthorized" 
                 })
             }
-            const temporeryPath = path.join(__dirname, "..", "sketches", masterId, "temporery")
-            const dirPath = path.join(__dirname, "..", "sketches", payload.style)
+            const temporeryPath = path.join(__dirname, "..", "tatoo", masterId, "temporery")
+            const dirPath = path.join(__dirname, "..", "tatoo", payload.style)
             if (fs.existsSync(temporeryPath)) {
                 if (!fs.existsSync(dirPath)) {
                     fs.mkdirSync(dirPath)
@@ -49,7 +49,7 @@ router.route("/tatoos")
                     if (err) throw err
                     const tatoo = await Tatoos.create({
                         ...payload,
-                        src: `sketches\\${payload.style}\\${newImgName}`
+                        src: `tatoo\\${payload.style}\\${newImgName}`
                     })
                     res.status(201).send(tatoo)
                 })
@@ -80,8 +80,8 @@ router.put("/tatoos/:tatooId", authMiddleware, async (req,res) => {
             })
         }
 
-        const temporeryPath = path.join(__dirname, "..", "sketches", masterId, "temporery")
-        const addedPath = path.join(__dirname, "..", "sketches", "added")
+        const temporeryPath = path.join(__dirname, "..", "tatoo", masterId, "temporery")
+        const addedPath = path.join(__dirname, "..", "tatoo", "added")
         const idPath = path.join(addedPath, tatooId)
 
         if (payload.imgChanged) {
@@ -103,7 +103,7 @@ router.put("/tatoos/:tatooId", authMiddleware, async (req,res) => {
                     tatooId,
                     {
                         ...payload,
-                        src: `sketches\\added\\${tatooId}\\${newImgName}`
+                        src: `tatoo\\added\\${tatooId}\\${newImgName}`
                     }
                 )
                 res.send(tatoo)
@@ -136,7 +136,7 @@ router.delete("/tatoos/:tatooId/:style/:fileName", authMiddleware, async (req,re
             })
         }
 
-        const filePath = path.join(__dirname, "..", "sketches", style, fileName)
+        const filePath = path.join(__dirname, "..", "tatoo", style, fileName)
             
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath)
