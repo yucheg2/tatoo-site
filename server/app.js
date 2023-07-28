@@ -32,6 +32,9 @@ async function start() {
             initDatabase()
         })
 
+        if (!fs.existsSync(path.join(__dirname, "tatoo"))) {
+            fs.mkdirSync(path.join(__dirname, "tatoo"))
+        }
         await mongoose.connect(config.get("mongoUri"))
         console.log(chalk.green("MongoDB connected!"))
         app.listen(PORT,() => {
