@@ -1,4 +1,4 @@
-
+/* eslint no-use-before-define: 0 */
 const createErrorMessage = (error) => {
     const { code, message } = error.response.data.error;
     if (code === 400) {
