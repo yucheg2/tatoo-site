@@ -16,6 +16,9 @@ async function clear (user) {
 const storage = multer.diskStorage({
     destination(req, file, cb) {
         if (!fs.existsSync(path.join( sketchPath, req.user._id))) {
+            if (!fs.existsSync(sketchPath)) {
+                fs.mkdirSync(sketchPath)
+            }
             fs.mkdirSync(path.join( sketchPath, req.user._id))
             fs.mkdirSync(path.join( sketchPath, req.user._id, "temporery"))
         } else if (!fs.existsSync(path.join( sketchPath, req.user._id, "temporery"))) {
