@@ -6,6 +6,7 @@ const config = require("config")
 const initDatabase = require("./startUp/initDataBase")
 const routes = require("./routes")
 const cors = require("cors")
+const fs = require("fs")
 
 const PORT = config.get("port")
 
