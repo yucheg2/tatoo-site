@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
             if (!fs.existsSync(sketchPath)) {
                 fs.mkdirSync(sketchPath)
             }
+            console.log(!fs.existsSync(sketchPath))
             fs.mkdirSync(path.join( sketchPath, req.user._id))
             fs.mkdirSync(path.join( sketchPath, req.user._id, "temporery"))
         } else if (!fs.existsSync(path.join( sketchPath, req.user._id, "temporery"))) {
