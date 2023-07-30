@@ -64,7 +64,7 @@ const EditForm = ({ name, phone, email }) => {
                             value={data.phone}
                             name="phone"
                             onChange={handleChange}
-                            label="Номерт телефона"
+                            label="Номер телефона"
                             placeHolder="Введите ваш номер"
                             type="tell"
                             error={error.phone}
