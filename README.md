@@ -1,8 +1,8 @@
 # tatoo-site
 
 💻 Технологии:
-+React
-+Redux Toolkit
++ React
++ Redux Toolkit
 + Primer CSS
 + PropTypes
 + React-Router 5
